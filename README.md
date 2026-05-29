@@ -42,3 +42,86 @@ Concevoir, développer et déployer une plateforme logicielle intermédiaire lé
 * **Sécuriser et pérenniser le patrimoine de la commune :** Modéliser une base de données relationnelle MySQL locale permettant de sauvegarder numériquement les informations essentielles des registres physiques afin de parer aux risques de perte, d'incendie ou de dégradation des cahiers d'état civil.
 * **Garantir la Haute Disponibilité (Mécanisme Intranet local) :** Configurer l'application pour qu'elle s'exécute sur un serveur local au sein de la mairie. En cas de coupure totale d'Internet à Niaguis, les agents municipaux continuent de saisir et traiter les actes en réseau local, les données se synchronisant automatiquement dès le retour du réseau.
 * **Respecter l'interopérabilité nationale :** Structurer le code PHP et le dictionnaire de données SQL selon les standards de l'État sénégalais pour permettre, à terme, une migration ou une interconnexion fluide avec le registre national unifié de l'état civil.
+
+
+## II. Analyse Méthodologique et Cadrage du Projet
+
+### A. Déploiement de la méthode QQOQCP
+Pour cerner toutes les dimensions opérationnelles de la dématérialisation à Niaguis, nous appliquons la méthode QQOQCP (Qui, Quoi, Où, Quand, Comment, Pourquoi).
+
+*   **QUI ? (Les acteurs du système)**
+    *   Bénéficiaires finaux : Les citoyens et familles de la commune de Niaguis (particulièrement en zone rurale).
+    *   Utilisateurs intermédiaires (Les Relais) : Les chefs de village, délégués de quartier et agents communautaires qui saisissent les pré-demandes.
+    *   Opérateurs système : Les agents administratifs de l'état civil et l'officier de l'état civil (le Maire ou ses adjoints) pour la validation et la signature.
+    *   Concepteur : Notre groupe.
+
+*   **QUOI ? (La solution technologique)**
+    *   Le développement d'une plateforme web (PHP/JS) connectée à une application desktop de gestion (Java) permettant d'effectuer des pré-demandes d'actes d'état civil, d'archiver numériquement les registres papier et de suivre l'avancement des dossiers à distance.
+
+     
+
+*   **OÙ ? (L'ancrage géographique et technique)**
+    *   *Géographique :* La commune rurale de Niaguis (Région de Ziguinchor, Sénégal).
+    *   *Technique :* Un serveur local installé au sein de la mairie de Niaguis pour un fonctionnement en Intranet, avec une passerelle Extranet synchronisée pour les relais communautaires distants.
+
+*   **QUAND ? (La temporalité du projet)**
+    *   *Phase actuelle :* Phase de cadrage, conception de la base de données (MCD/MLD) et présentation initiale .
+    *   *Phase future :* Développement des modules (PHP, JS, Java) etc.
+
+*   **COMMENT ? **
+    *   *Back-end :* PHP 8 avec l'extension PDO pour des requêtes SQL préparées (sécurité anti-injection).
+    *   *Front-end :* HTML5/CSS3 (Grid/Flexbox responsive) et JavaScript asynchrone (Fetch API) pour la soumission des formulaires sans rechargement de page.
+    *   *Application Interne :* Java (Swing/JavaFX) pour le traitement lourd et la génération de rapports par les agents de la mairie.
+## III. Justification des Choix Technologiques et Utilité des Langages
+
+Pour répondre aux exigences  de notre projet de Licence 3, la plateforme n'est pas un simple site web isolé, mais un écosystème interconnecté exploitant la complémentarité de quatre technologies majeures.
+
+### 1. PHP 
+*   **Rôle :** Langage Back-end principal de la plateforme web.
+*   **Utilité  :** PHP fait office de passerelle entre l'interface utilisateur et la base de données. C'est lui qui reçoit les formulaires de pré-demande envoyés par les relais, vérifie la validité des données saisies, et exécute les algorithmes de routage des dossiers vers les espaces d'administration. Il assure également la sécurité des sessions utilisateurs (Citoyens vs Agents de mairie).
+
+### 2. SQL / MySQL (La Persistance et la Sécurité des Données)
+*   **Rôle :** Système de Gestion de Base de Données Relationnelle (SGBDR).
+*   **Utilité exacte :** Il gère le stockage structuré et immuable de l'état civil de Niaguis. À travers des tables optimisées (`utilisateurs`, `pre_demandes`, `registres_physiques`), il permet d'archiver numériquement les données des cahiers papier. L'utilisation de requêtes SQL préparées via PDO en PHP garantit une protection absolue contre les attaques par injection SQL.
+
+### 3. JavaScript ES6+ (L'Asynchronisme et l'Expérience Utilisateur Mobile)
+*   **Rôle :** Langage Front-end dynamique.
+*   **Utilité exacte :** En milieu rural où la connexion Internet est instable, JavaScript est crucial. Grâce à l'utilisation de la `Fetch API` (AJAX), il va permettre aux relais communautaires de soumettre des pré-demandes et de consulter l'onglet "Suivi Dossier" en temps réel sans jamais recharger la page web. Cela réduit drastiquement la consommation de bande passante et évite les plantages en cas de micro-coupures réseau.
+
+### 4. Java 
+*   **Rôle :** Application Desktop (Bureau) autonome.
+*   **Utilité exacte :** Déployé localement sur les ordinateurs de la mairie de Niaguis, ce logiciel Java (Swing/JavaFX) offre un environnement de travail performant et sécurisé pour les agents d'état civil. Connecté à la même base de données MySQL, il permet d'automatiser l'impression des actes officiels au format PDF, de générer des statistiques graphiques sur la natalité, et d'assurer la continuité du service en mode Intranet (réseau local) même lors d'une panne Internet totale dans la commune.
+
+*   **POURQUOI ? **
+    *   Pour éradiquer le non-enregistrement des naissances à Niaguis, réduire à zéro les déplacements inutiles et coûteux des populations rurales, et offrir une solution informatique résiliente qui ne plante pas lors des coupures d'Internet.
+
+
+
+### B. Matrice Stratégique SWOT (Forces, Faiblesses, Opportunités, Menaces)
+
+Cette matrice permet d'anticiper les risques du projet et de maximiser ses chances de réussite sur le terrain en Casamance.
+
+
+ 🚀 FORCES (Facteurs internes positifs) | 
+
+ • **Architecture Hybride** (Intranet/Extranet) : L'application fonctionne même sans connexion Internet à la mairie.<br>
+• **Interface Inclusive** : Pensée pour être manipulée par des relais communautaires pour le compte des populations analphabètes.<br>
+• **Sécurisation locale** : Sauvegarde numérique des registres papier contre l'usure du temps et les sinistres. 
+
+⚠️ FAIBLESSES (Facteurs internes négatifs) 
+
+ • **Dépendance énergétique** : Sensibilité aux coupures d'électricité à la mairie (nécessite un onduleur ou panneau solaire).<br>
+ • **Courbe d'apprentissage** : Temps d'adaptation nécessaire pour les agents municipaux habitués au 100% papier.<br>
+ • **Maintenance technique** : Besoin d'un suivi informatique local pour gérer le serveur.
+
+ **💡 OPPORTUNITÉS (Facteurs externes positifs)** 
+
+• **Alignement National** : S'inscrit directement dans la Vision Sénégal 2050 et la modernisation de l'état civil de l'État.<br>
+• **Appui institutionnel** : Possibilité de s'appuyer sur l'expertise technique et le réseau de l'ENO de Ziguinchor.<br>
+• **Réplication territoriale** : Solution hautement duplicable dans les autres communes rurales de la Casamance. 
+
+**🚨 MENACES (Facteurs externes négatifs)** 
+
+• **Résistance au changement** : Réticence de certains usagers ou agents face à la digitalisation des procédures.<br>
+• **Instabilité du réseau mobile** : Difficultés temporaires pour les relais distants d'envoyer les paquets de pré-demandes.<br>
+• **Évolution réglementaire** : Risque de modifications des standards nationaux d'état civil en cours de développement. |
