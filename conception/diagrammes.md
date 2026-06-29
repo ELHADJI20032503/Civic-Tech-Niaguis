@@ -46,30 +46,66 @@ graph TD
 classDiagram
     direction TB
     class Utilisateur {
-        +int id_user
+        +int idUser
         +string login
-        +string password_hash
+        +string passwordHash
         +string role
     }
     class Demande {
-        +int id_demande
-        +string numero_suivi
-        +string type_acte
+        +int idDemande
+        +string numeroSuivi
+        +string typeActe
         +string statut
-        +boolean est_paye
+        +boolean estPaye
     }
     class Citoyen {
-        +int id_citoyen
+        +int idCitoyen
         +string nom
         +string prenom
     }
-    class DetailsNaissance {
-        +id_demande
-        +string prenom_pere
-        +string prenom_mere
-    }
 
-    Demande <|-- DetailsNaissance
-    Utilisateur "1" --> "0..*" Demande : Gere
-    Demande "1" --> "1" Citoyen : Concerne
+    Utilisateur --> Demande : Gere
+    Demande --> Citoyen : Concerne
+```
+
+---
+
+## ⏱️ 3. Diagramme de Séquence (Flux Chronologique)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor R as Relais Communautaire
+    actor A as Agent Etat Civil
+    participant Sys as Systeme PHP et JS
+    participant BDD as Base de Donnees MySQL
+
+    Note over R, BDD: PHASE 1 : AUTHENTIFICATION ET ROUTAGE
+    R->+Sys: Saisir login et password
+    Sys->+BDD: SELECT role FROM Utilisateur
+    BDD-->>-Sys: Retourne le role
+    Sys->Sys: Initialiser session
+    Sys-->>-R: Redirection portail
+
+    Note over R, BDD: PHASE 2 : SAISIE MULTI-ACTES
+    R->+Sys: Selectionner type acte
+    Sys->+BDD: SELECT montant FROM Tarif
+    BDD-->>-Sys: Retourne le prix
+    Sys-->>R: Affichage du tarif dynamique
+    R->Sys: Soumettre le formulaire
+    Sys->+BDD: INSERT INTO Demande
+    BDD-->>-Sys: Confirmation SQL
+    Sys-->>-R: Impression du recu
+
+    Note over A, BDD: PHASE 3 : GUICHET DE CAISSE ET CLOTURE
+    A->+Sys: Encaisser la taxe municipale
+    Sys->+BDD: UPDATE Demande SET est_paye = 1
+    BDD-->>-Sys: Confirmation SQL
+    Sys->Sys: Generer le recu PDF local
+    A->Sys: Saisir numero de registre physique
+    Sys->+BDD: UPDATE Demande SET statut = Archive
+    BDD-->>-Sys: Confirmation SQL
+    Sys->+BDD: INSERT INTO JournalActivite
+    BDD-->>-Sys: Log d audit enregistre
+    Sys-->>-A: Dossier cloture avec succes
 ```
