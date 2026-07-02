@@ -33,13 +33,11 @@ class LoginController extends Controller
                 // Connexion officielle : Initialisation de la session Laravel
                 Auth::login($user);
 
-                // 4. AIGUILLAGE AUTOMATIQUE PAR RÔLE (Exigence Fonctionnelle F-01)
-                return match($user->role) {
-                    'relais' => redirect()->route('relais.dashboard'),
-                    'agent'  => redirect()->route('mairie.dashboard'),
-                    'admin'  => redirect()->route('admin.dashboard'),
-                    default  => redirect('/'),
-                };
+                // Sauvegarde du nom complet en session pour l'affichage dynamique (ex: Aminata Sall)
+                session(['user_fullname' => $user->prenom . ' ' . $user->nom]);
+
+                // 4. REDIRECTION VERS LA SÉLECTION DE PROFIL (Conforme à la maquette)
+                return redirect()->route('profil.view');
             }
         }
 
