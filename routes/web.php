@@ -32,7 +32,16 @@ Route::get('/admin/dashboard', function () {
     return "Bienvenue sur le Panneau d'Administration Système !"; 
 })->name('admin.dashboard');
 
-// 4. Actions métiers du Relais Terrain (Jalon 3 - Saisie multi-actes)
-Route::get('/relais/nouvelle-demande', function () {
-    return "Interface de saisie multi-actes (Naissance, Mariage, Décès) en cours de préparation backend.";
-})->name('relais.create');
+// 4. Actions métiers du Relais Terrain (Saisie multi-actes complète)
+Route::get('/relais/choisir-acte', [RelaisDashboardController::class, 'choix_acte'])->name('relais.choix_acte');
+
+Route::get('/relais/nouvelle-demande-naissance', [RelaisDashboardController::class, 'create'])->name('relais.create');
+Route::post('/relais/nouvelle-demande-naissance', [RelaisDashboardController::class, 'store'])->name('relais.store');
+
+Route::get('/relais/nouvelle-demande-mariage', [RelaisDashboardController::class, 'create_mariage'])->name('relais.create_mariage');
+Route::post('/relais/nouvelle-demande-mariage', [RelaisDashboardController::class, 'store_mariage'])->name('relais.store_mariage');
+
+Route::get('/relais/nouvelle-demande-deces', [RelaisDashboardController::class, 'create_deces'])->name('relais.create_deces');
+Route::post('/relais/nouvelle-demande-deces', [RelaisDashboardController::class, 'store_deces'])->name('relais.store_deces');
+
+

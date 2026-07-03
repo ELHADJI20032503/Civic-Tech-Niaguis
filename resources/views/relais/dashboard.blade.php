@@ -73,7 +73,10 @@
             <!-- Actions Rapides -->
             <span class="text-muted fw-bold d-block mb-3" style="font-size: 11px; letter-spacing: 0.5px;">ACTIONS RAPIDES</span>
             
-            <div class="action-card" onclick="location.href='{{ route('relais.create') }}'">
+            
+
+            <div class="action-card" onclick="location.href='{{ route('relais.choix_acte') }}'">
+
                 <div class="d-flex align-items-center gap-3">
                     <div class="icon-wrapper text-success">📄</div>
                     <div>
