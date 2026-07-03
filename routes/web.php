@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Relais\RelaisDashboardController;
 
 // 1. Authentification globale (NF-02)
 Route::match(['get', 'post'], '/', function () {
@@ -20,9 +21,8 @@ Route::get('/selection-profil', function () { return view('auth.profil'); })->na
 Route::post('/selection-profil-action', [ProfileController::class, 'select'])->name('profil.select');
 
 // 3. Portails de destinations officielles (Exigence F-01 / Maquette Penda)
-Route::get('/relais/dashboard', function () { 
-    return view('relais.dashboard'); 
-})->name('relais.dashboard');
+// BRANCHEMENT LOGIQUE SUR TON NOUVEAU CONTROLEUR BACKEND DYNAMIQUE
+Route::get('/relais/dashboard', [RelaisDashboardController::class, 'index'])->name('relais.dashboard');
 
 Route::get('/mairie/dashboard', function () { 
     return "Bienvenue sur le Portail de Caisse de la Mairie !"; 
