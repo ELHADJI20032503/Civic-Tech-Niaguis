@@ -4,14 +4,35 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ProfileController;
 
-// Formulaire d'authentification principal
-Route::get('/', function () { return view('auth.login'); })->name('login');
+// 1. Authentification globale (NF-02)
+Route::match(['get', 'post'], '/', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/login', function () {
+    return redirect('/');
+});
+
 Route::post('/login-action', [LoginController::class, 'login'])->name('login.post');
 
-// Page de sélection de profil (La maquette de Moutarou)
+// 2. Sélection du profil utilisateur (Maquette Moutarou)
 Route::get('/selection-profil', function () { return view('auth.profil'); })->name('profil.view');
 Route::post('/selection-profil-action', [ProfileController::class, 'select'])->name('profil.select');
 
-// Directions finales de redirection (Jalons métiers)
-Route::get('/relais/dashboard', function () { return "Bienvenue sur ton espace de saisie, Relais Communautaire !"; })->name('relais.dashboard');
-Route::get('/mairie/dashboard', function () { return "Bienvenue sur le portail de validation, Officier d'Etat Civil !"; })->name('mairie.dashboard');
+// 3. Portails de destinations officielles (Exigence F-01 / Maquette Penda)
+Route::get('/relais/dashboard', function () { 
+    return view('relais.dashboard'); 
+})->name('relais.dashboard');
+
+Route::get('/mairie/dashboard', function () { 
+    return "Bienvenue sur le Portail de Caisse de la Mairie !"; 
+})->name('mairie.dashboard');
+
+Route::get('/admin/dashboard', function () { 
+    return "Bienvenue sur le Panneau d'Administration Système !"; 
+})->name('admin.dashboard');
+
+// 4. Actions métiers du Relais Terrain (Jalon 3 - Saisie multi-actes)
+Route::get('/relais/nouvelle-demande', function () {
+    return "Interface de saisie multi-actes (Naissance, Mariage, Décès) en cours de préparation backend.";
+})->name('relais.create');
