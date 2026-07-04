@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Relais\RelaisDashboardController;
+use App\Http\Controllers\Mairie\MairieDashboardController;
 
 // 1. Authentification globale (NF-02)
 Route::match(['get', 'post'], '/', function () {
@@ -24,9 +25,8 @@ Route::post('/selection-profil-action', [ProfileController::class, 'select'])->n
 // BRANCHEMENT LOGIQUE SUR TON NOUVEAU CONTROLEUR BACKEND DYNAMIQUE
 Route::get('/relais/dashboard', [RelaisDashboardController::class, 'index'])->name('relais.dashboard');
 
-Route::get('/mairie/dashboard', function () { 
-    return "Bienvenue sur le Portail de Caisse de la Mairie !"; 
-})->name('mairie.dashboard');
+Route::get('/mairie/dashboard', [MairieDashboardController::class, 'index'])->name('mairie.dashboard');
+Route::post('/mairie/traiter/{id}', [MairieDashboardController::class, 'validerDossier'])->name('mairie.traiter');
 
 Route::get('/admin/dashboard', function () { 
     return "Bienvenue sur le Panneau d'Administration Système !"; 
