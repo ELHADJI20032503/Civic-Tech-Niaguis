@@ -28,15 +28,13 @@
         .filter-select { background-color: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; color: #334155; }
         .badge-maquette { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-block; }
         .status-attente { background-color: #fef3c7; color: #d97706; }
-        .status-examen { background-color: #e0f2fe; color: #0284c7; }
-        .status-approuve { background-color: #dcfce7; color: #16a34a; }
         .status-pret { background-color: #f3e8ff; color: #7c3aed; }
+        .status-approuve { background-color: #dcfce7; color: #16a34a; }
         .status-rejete { background-color: #fee2e2; color: #dc2626; }
     </style>
 </head>
 <body>
 
-    <!-- BARRE LATÉRALE UNIQUE AVEC ACCÈS ROUTÉS -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="sidebar-brand-icon">🛡️</div>
@@ -45,23 +43,16 @@
                 <span class="d-block" style="font-size: 10px; opacity: 0.6;">Niaguis</span>
             </div>
         </div>
-
         <span class="nav-section-title">Navigation</span>
         <ul class="sidebar-nav">
-            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>📊 Tableau de bord</span></a></li>
-            <li class="sidebar-nav-item">
-                <a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link active">
-                    <span>📂 File d'attente</span>
-                    <span class="badge bg-danger rounded-pill" style="font-size: 10px;">{{ $nb_en_attente }}</span>
-                </a>
-            </li>
-            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>📄 Documents civils</span></a></li>
-            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>👥 Citoyens</span></a></li>
-            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>📈 Rapports</span></a></li>
-            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>📊 Statistiques</span></a></li>
-            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>⚙️ Paramètres</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.tableau_de_bord') }}" class="sidebar-nav-link @if(Route::is('mairie.tableau_de_bord')) active @endif"><span>📊 Tableau de bord</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link @if(Route::is('mairie.dashboard')) active @endif"><span>📂 File d'attente</span><span class="badge bg-danger rounded-pill" style="font-size: 10px;">{{ $nb_en_attente }}</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.documents') }}" class="sidebar-nav-link @if(Route::is('mairie.documents')) active @endif"><span>📄 Documents civils</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.citoyens') }}" class="sidebar-nav-link @if(Route::is('mairie.citoyens')) active @endif"><span>👥 Citoyens</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.rapports') }}" class="sidebar-nav-link @if(Route::is('mairie.rapports')) active @endif"><span>📈 Rapports</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.statistiques') }}" class="sidebar-nav-link @if(Route::is('mairie.statistiques')) active @endif"><span>📊 Statistiques</span></a></li>
+            <li class="sidebar-nav-item"><a href="{{ route('mairie.parametres') }}" class="sidebar-nav-link @if(Route::is('mairie.parametres')) active @endif"><span>⚙️ Paramètres</span></a></li>
         </ul>
-
         <div class="sidebar-footer">
             <div style="font-size: 20px;">👤</div>
             <div>
@@ -71,7 +62,6 @@
         </div>
     </div>
 
-    <!-- ZONE PRINCIPALE -->
     <div class="main-content">
         <div class="topbar">
             <input type="text" class="search-input-box" placeholder="🔍 Rechercher une demande...">
@@ -86,52 +76,41 @@
                 <h1 class="h3 fw-bold text-dark mb-1">File d'Attente — Mairie</h1>
                 <p class="text-muted small mb-0">Gérez et traitez les demandes d'actes d'état civil soumises par les relais.</p>
             </div>
-            <div class="d-flex gap-2">
-                <button class="btn btn-outline-secondary btn-sm px-3 bg-white" style="border-radius: 8px;">📥 Exporter</button>
-                <button class="btn btn-success btn-sm px-3" style="border-radius: 8px; background-color: #15803d; border: none;">＋ Nouvelle demande</button>
-            </div>
         </div>
 
-        <!-- COMPTEURS KPIS -->
         <div class="row g-3 mb-4">
             <div class="col">
                 <div class="kpi-card">
                     <div class="kpi-header"><span class="kpi-title">TOTAL</span><div class="kpi-icon text-secondary">📄</div></div>
                     <h2 class="h2 fw-bold text-dark mb-0">{{ $total_dossiers }}</h2>
-                    <div class="kpi-trend text-success">📈 +3 aujourd'hui</div>
                 </div>
             </div>
             <div class="col">
                 <div class="kpi-card">
                     <div class="kpi-header"><span class="kpi-title">EN ATTENTE</span><div class="kpi-icon text-warning">🕒</div></div>
                     <h2 class="h2 fw-bold text-dark mb-0">{{ $nb_en_attente }}</h2>
-                    <div class="kpi-trend text-muted">➔ Stable</div>
                 </div>
             </div>
             <div class="col">
                 <div class="kpi-card">
                     <div class="kpi-header"><span class="kpi-title">APPROUVÉS</span><div class="kpi-icon text-success">✓</div></div>
                     <h2 class="h2 fw-bold text-dark mb-0">{{ $nb_approuves }}</h2>
-                    <div class="kpi-trend text-success">📈 +3 aujourd'hui</div>
                 </div>
             </div>
             <div class="col">
                 <div class="kpi-card">
                     <div class="kpi-header"><span class="kpi-title">REJETÉS</span><div class="kpi-icon text-danger">✕</div></div>
                     <h2 class="h2 fw-bold text-dark mb-0">{{ $nb_rejetes }}</h2>
-                    <div class="kpi-trend text-danger">📉 -1 hier</div>
                 </div>
             </div>
             <div class="col">
                 <div class="kpi-card">
                     <div class="kpi-header"><span class="kpi-title">PRÊTS</span><div class="kpi-icon text-purple">📦</div></div>
                     <h2 class="h2 fw-bold text-dark mb-0">{{ $nb_prets }}</h2>
-                    <div class="kpi-trend text-muted">➔ Stable</div>
                 </div>
             </div>
         </div>
 
-        <!-- TABLEAU CENTRAL -->
         <div class="data-card">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <input type="text" class="form-control btn-sm bg-light" style="max-width: 240px; border-radius: 8px; font-size: 13px;" placeholder="🔍 Nom ou N° de dossier...">
@@ -144,10 +123,10 @@
 
             <div class="table-responsive">
                 <table class="table align-middle table-hover">
-                    <thead class="table-light" style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                    <thead class="table-light" style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
                         <tr>
                             <th>N° Dossier</th>
-                                                        <th>Citoyen</th>
+                            <th>Citoyen</th>
                             <th>Soumis par</th>
                             <th>Type de Document</th>
                             <th>Date</th>
@@ -159,29 +138,18 @@
                     <tbody style="font-size: 13.5px; color: #334155; font-weight: 500;">
                         @forelse($demandes as $demande)
                             <tr>
-                                <!-- Numéro de dossier -->
                                 <td class="fw-bold text-secondary" style="font-size: 12.5px;">{{ $demande->numero_suivi }}</td>
-                                
-                                <!-- Citoyen avec initiales en cercle noir -->
                                 <td>
-                                    <div class="d-flex align-items-center gap-2">
+                                                     <div class="d-flex align-items-center gap-2">
                                         <div class="badge bg-dark rounded-circle p-2" style="font-size: 10px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
                                             {{ strtoupper(substr($demande->prenom, 0, 1) . substr($demande->nom, 0, 1)) }}
                                         </div>
                                         <strong>{{ $demande->prenom }} {{ $demande->nom }}</strong>
                                     </div>
                                 </td>
-                                
-                                <!-- Agent relais terrain -->
                                 <td class="text-muted">{{ $demande->nom_relais }}</td>
-                                
-                                <!-- Type d'acte -->
                                 <td>📄 Acte de {{ $demande->type_acte }}</td>
-                                
-                                <!-- Date de soumission -->
                                 <td class="text-muted">{{ date('d/m/Y', strtotime($demande->date_creation)) }}</td>
-                                
-                                <!-- Couleur des badges selon le statut -->
                                 <td>
                                     @if($demande->statut === 'Reçu')
                                         <span class="badge-maquette status-attente">En attente</span>
@@ -193,8 +161,6 @@
                                         <span class="badge-maquette status-rejete">Rejeté</span>
                                     @endif
                                 </td>
-                                
-                                <!-- Consultation des certificats médicaux ou d'accouchement -->
                                 <td>
                                     @if($demande->type_acte === 'Naissance' && !empty($demande->certificat_hopital_path))
                                         <a href="{{ asset('storage/' . $demande->certificat_hopital_path) }}" target="_blank" class="btn btn-sm btn-outline-dark" style="font-size: 12px; border-radius: 6px;">🔍 Consulter</a>
@@ -206,14 +172,12 @@
                                         <span class="text-muted small">Aucun scan</span>
                                     @endif
                                 </td>
-                                
-                                <!-- Formulaires d'actions et de caisse guichet -->
                                 <td class="text-end">
                                     @if($demande->statut === 'Reçu')
                                         <form action="{{ route('mairie.traiter', $demande->id_demande) }}" method="POST" class="d-inline">
                                             @csrf
                                             <input type="hidden" name="action" value="examiner">
-                                            <button type="submit" class="btn btn-sm btn-primary py-1 px-2" style="font-size: 12px; border-radius: 6px;">Approuver l'acte</button>
+                                            <button type="submit" class="btn btn-sm btn-primary py-1 px-2" style="font-size: 12px; border-radius: 6px;">Approuver</button>
                                         </form>
                                         <form action="{{ route('mairie.traiter', $demande->id_demande) }}" method="POST" class="d-inline ms-1">
                                             @csrf
@@ -244,4 +208,3 @@
 
 </body>
 </html>
-

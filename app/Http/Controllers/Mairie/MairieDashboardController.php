@@ -83,5 +83,99 @@ class MairieDashboardController extends Controller
 
         return redirect()->route('mairie.dashboard');
     }
+        // 3. EXTRACTION DU REGISTRE CENTRALISÉ DES CITOYENS (JALON 5 BACKEND)
+    public function citoyens(Request $request)
+    {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+        
+        // Récupération de tous les citoyens enregistrés en base 3NF
+        $citoyens = DB::table('citoyens')
+            ->orderBy('nom', 'asc')
+            ->orderBy('prenom', 'asc')
+            ->get();
+
+        return view('mairie.citoyens', compact('nb_en_attente', 'citoyens'));
+    }
+      // 4. LOGIQUE D'ANALYSE ET STATISTIQUES MUNICIPALES 
+        
+    public function statistiques()
+    {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+
+        // Récupération des volumes par type d'acte (Agrégation SQL)
+        $naissances = DB::table('demandes')->where('type_acte', 'Naissance')->count();
+        $mariages   = DB::table('demandes')->where('type_acte', 'Mariage')->count();
+        $deces      = DB::table('demandes')->where('type_acte', 'Décès')->count();
+
+        // Sécurisation contre l'absence de la table paiements
+        try {
+            $recettes_totales = DB::table('paiements')->sum('montant');
+        } catch (\Exception $e) {
+            $recettes_totales = 0; // Évite le plantage si la table n'existe pas encore
+        }
+
+        return view('mairie.statistiques', compact('nb_en_attente', 'naissances', 'mariages', 'deces', 'recettes_totales'));
+    }
+
+    // 5. RAPPORTS MUNICIPAUX
+    public function rapports()
+    {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+        return view('mairie.rapports', compact('nb_en_attente'));
+    }
+
+    // 6. PARAMÈTRES DE SITE MAIRIE
+    public function parametres()
+    {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+        return view('mairie.parametres', compact('nb_en_attente'));
+    }
+
+        // 7. REGISTRE DES DOCUMENTS OFFICIELS ARCHIVÉS
+    public function documents()
+    {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+
+        // Utilisation de date_creation (le vrai champ de ta table) pour le tri SQL
+        $actes_archives = DB::table('demandes')
+            ->join('citoyens', 'demandes.id_citoyen', '=', 'citoyens.id_citoyen')
+            ->where('demandes.statut', 'Signé & Archivé')
+            ->select('demandes.*', 'citoyens.nom', 'citoyens.prenom')
+            ->orderBy('demandes.date_creation', 'desc')
+            ->get();
+
+        return view('mairie.documents', compact('nb_en_attente', 'actes_archives'));
+    }
+
+    // 6. LOGIQUE DE COMMANDEMENT DU TABLEAU DE BORD PRINCIPAL (BACKEND)
+    public function tableauDeBord()
+    {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+        $total_dossiers = DB::table('demandes')->count();
+        $nb_approuves   = DB::table('demandes')->where('statut', 'Signé & Archivé')->count();
+
+        // Calcul du taux d'efficacité de traitement de la mairie de Niaguis
+        $taux_traitement = $total_dossiers > 0 ? round(($nb_approuves / $total_dossiers) * 100) : 0;
+
+        // Récupération des 3 derniers paiements encaissés à la caisse du guichet
+        try {
+            $recettes_totales = DB::table('paiements')->sum('montant');
+            $derniers_paiements = DB::table('paiements')
+                ->join('demandes', 'paiements.id_demande', '=', 'demandes.id_demande')
+                ->join('citoyens', 'demandes.id_citoyen', '=', 'citoyens.id_citoyen')
+                ->select('paiements.*', 'citoyens.nom', 'citoyens.prenom', 'demandes.numero_suivi')
+                ->orderBy('paiements.date_paiement', 'desc')
+                ->limit(3)
+                ->get();
+        } catch (\Exception $e) {
+            $recettes_totales = 0;
+            $derniers_paiements = [];
+        }
+
+        return view('mairie.tableau_de_bord', compact(
+            'nb_en_attente', 'total_dossiers', 'nb_approuves', 'taux_traitement', 'recettes_totales', 'derniers_paiements'
+        ));
+    }
+
 
 }
