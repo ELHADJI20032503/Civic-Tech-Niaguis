@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Relais\RelaisDashboardController;
 use App\Http\Controllers\Mairie\MairieDashboardController;
-
+use App\Http\Controllers\Admin\AdminDashboardController;
 // ==========================================
 // 1. AUTHENTIFICATION & SÉLECTION DE PROFIL (NF-02)
 // ==========================================
@@ -51,6 +51,13 @@ Route::get('/mairie/parametres', function () {
 Route::post('/mairie/traiter/{id}', [MairieDashboardController::class, 'validerDossier'])->name('mairie.traiter');
 
 // ==========================================
-// 4. PANNEAU D'ADMINISTRATION GÉNÉRAL
 // ==========================================
-Route::get('/admin/dashboard', function () { return "Bienvenue sur l'administration système !"; })->name('admin.dashboard');
+// 4. PORTAIL ET REQUÊTES SUPER-ADMINISTRATEUR (LOGIQUE COMPLÈTE)
+
+
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin/gestion-agents', [AdminDashboardController::class, 'agents'])->name('admin.agents');
+Route::post('/admin/gestion-agents/creer', [AdminDashboardController::class, 'storeAgent'])->name('admin.agents.store');
+Route::get('/admin/statistiques', [AdminDashboardController::class, 'statistiques'])->name('admin.statistiques');
+Route::get('/admin/rapports-systeme', [AdminDashboardController::class, 'rapports'])->name('admin.rapports');
+Route::get('/admin/configuration', [AdminDashboardController::class, 'configuration'])->name('admin.configuration');
