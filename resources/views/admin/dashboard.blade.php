@@ -42,7 +42,7 @@
 </head>
 <body>
 
-    <!-- SIDEBAR DARK NETTOYÉE ET CORRIGÉE -->
+    <!-- SIDEBAR DARK PARFAITEMENT STRUCTURÉE -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <span style="font-size: 22px;">🛡️</span>
@@ -62,10 +62,12 @@
         </ul>
 
         <div class="sidebar-footer">
-            <div style="font-size: 20px;">👤</div>
+            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 12px; flex-shrink: 0;">
+                {{ strtoupper(substr(session('user_fullname', 'AD'), 0, 2)) }}
+            </div>
             <div>
-                <strong class="d-block text-white" style="font-size: 12.5px;">Elhadji Touré</strong>
-                <span style="font-size: 10.5px; color: #64748b;">Administrateur</span>
+                <strong class="d-block text-white" style="font-size: 12.5px;">{{ session('user_fullname', 'Admin Local') }}</strong>
+                <span style="font-size: 10.5px; color: #64748b;">Administrateur Système</span>
             </div>
         </div>
     </div>
@@ -95,7 +97,7 @@
             </div>
         </div>
 
-        <!-- COMPTEURS KPIS MUNICIPAUX -->
+        <!-- COMPTEURS KPIS MUNICIPAUX DYNAMIQUES -->
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-2 mb-4">
             <div class="col">
                 <div class="kpi-card">
@@ -141,6 +143,7 @@
             </div>
         </div>
 
+        <!-- ZONE DES GRAPHES ET ACTIONS -->
         <div class="row g-3">
             <div class="col-lg-9">
                 <div class="row g-3">
@@ -152,7 +155,7 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                                                <div class="chart-card" style="height: 340px;">
+                        <div class="chart-card" style="height: 340px;">
                             <h6 class="fw-bold text-dark small mb-1">Types de documents</h6>
                             <span class="text-muted" style="font-size: 10px;">Répartition globale</span>
                             <div class="text-center mt-4">
@@ -192,4 +195,3 @@
 
 </body>
 </html>
-

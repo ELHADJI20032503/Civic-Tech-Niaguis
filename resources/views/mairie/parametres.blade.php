@@ -49,13 +49,17 @@
             <li class="sidebar-nav-item"><a href="{{ route('mairie.statistiques') }}" class="sidebar-nav-link @if(Route::is('mairie.statistiques')) active @endif"><span>📊 Statistiques</span></a></li>
             <li class="sidebar-nav-item"><a href="{{ route('mairie.parametres') }}" class="sidebar-nav-link @if(Route::is('mairie.parametres')) active @endif"><span>⚙️ Paramètres</span></a></li>
         </ul>
-        <div class="sidebar-footer">
-            <div style="font-size: 20px;">👤</div>
+                <!-- FOOTER SIDEBAR DYNAMIQUE POUR L'OFFICIER CONNECTÉ -->
+        <div class="sidebar-footer" style="margin-top: auto; display: flex; align-items: center; gap: 12px; background-color: #1e293b; padding: 12px; border-radius: 12px;">
+            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 12px; flex-shrink: 0;">
+                {{ strtoupper(substr(session('user_fullname', 'OF'), 0, 2)) }}
+            </div>
             <div>
-                <strong class="d-block text-white" style="font-size: 12.5px;">Moussa Baldé</strong>
-                <span style="font-size: 10.5px; opacity: 0.6;">Officier d'État Civil</span>
+                <strong class="d-block text-white" style="font-size: 12.5px;">{{ session('user_fullname', 'Officier Municipal') }}</strong>
+                <span style="font-size: 10.5px; color: #64748b;">Officier d'État Civil</span>
             </div>
         </div>
+
     </div>
 
     <!-- ZONE CONFIGURATION DES PARAMÈTRES -->

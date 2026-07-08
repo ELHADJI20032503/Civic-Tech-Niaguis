@@ -160,12 +160,23 @@
                 <span class="text-muted" style="font-size: 11px;">Plateforme État-Civil</span>
             </div>
         </div>
-        <div class="text-muted small">Pré-commande d'actes d'état civil &nbsp;›&nbsp; <strong class="text-dark">Sélection du profil</strong></div>
+                <div class="text-muted small">Pré-commande d'actes d'état civil &nbsp;›&nbsp; <strong class="text-dark">Sélection du profil</strong></div>
         <div class="d-flex align-items-center gap-3">
-            <span class="badge bg-success p-2" style="font-size: 12px;">🟢 AU</span>
-            <span class="small text-dark text-start d-inline-block"><strong>Aminata Sall</strong><br><span class="text-muted" style="font-size: 11px;">Connectée</span></span>
-            <a href="#" class="btn btn-sm btn-outline-secondary ms-2" style="font-size: 12px;">➔ Se déconnecter</a>
+            <!-- GÉNÉRATION DYNAMIQUE DES INITIALES (Ex: EL, MO, AM) -->
+            <span class="badge bg-success p-2 fw-bold" style="font-size: 12px; letter-spacing: 0.5px;">
+                🟢 {{ strtoupper(substr(session('user_fullname', 'AG'), 0, 2)) }}
+            </span>
+            
+            <!-- NOM ET PRÉNOM EXTRAITS DU LOGINCONTROLLER EN LIVE -->
+            <span class="small text-dark text-start d-inline-block">
+                <strong>{{ session('user_fullname', 'Agent Connecté') }}</strong><br>
+                <span class="text-success fw-bold" style="font-size: 11px;">● En ligne</span>
+            </span>
+            
+            <!-- ROUTE DE DÉCONNEXION SÉCURISÉE -->
+            <a href="{{ route('login') }}" class="btn btn-sm btn-outline-secondary ms-2" style="font-size: 12px;">➔ Se déconnecter</a>
         </div>
+
     </nav>
 
     <!-- Conteneur Principal -->

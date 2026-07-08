@@ -38,24 +38,31 @@ class AdminDashboardController extends Controller
     }
 
     // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
-    public function storeAgent(Request $request)
+        public function storeAgent(Request $request)
     {
+        // RECTIFICATION : Aligner la règle unique sur ta colonne réelle 'login'
         $request->validate([
-            'nom' => 'required|string|max:255',
-            'email' => 'required|email|unique:utilisateurs,email',
-            'role' => 'required|in:Relais,Mairie,Admin',
-            'mot_de_passe' => 'required|string|min:4'
+            'login'    => 'required|string|max:255|unique:utilisateurs,login', // Correction de la colonne
+            'password' => 'required|string|min:4',
+            'prenom'   => 'required|string|max:255',
+            'nom'      => 'required|string|max:255',
+            'role'     => 'required|string|in:admin,mairie,relais',
         ]);
 
+        // Suite de ton code pour l'insertion de l'agent...
         DB::table('utilisateurs')->insert([
-            'nom' => $request->input('nom'),
-            'email' => $request->input('email'),
-            'role' => $request->input('role'),
-            'mot_de_passe' => password_hash($request->input('mot_de_passe'), PASSWORD_BCRYPT)
+            'login'         => $request->input('login'),
+            'password_hash' => password_hash($request->input('password'), PASSWORD_BCRYPT),
+            'prenom'        => $request->input('prenom'),
+            'nom'           => $request->input('nom'),
+            'role'          => $request->input('role'),
+            'statut_compte' => 'actif',
+            'created_at'    => now()
         ]);
 
-        return redirect()->route('admin.agents')->with('success', 'Agent créé avec succès !');
+        return redirect()->route('admin.agents')->with('success', 'L\'agent municipal a été créé avec succès.');
     }
+
 
     // 4. STATISTIQUES AVANCÉES
     public function statistiques()

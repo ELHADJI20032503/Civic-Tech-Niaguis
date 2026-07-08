@@ -57,6 +57,20 @@
                 </a>
             </li>
         </ul>
+                <!-- AJOUT DU FOOTER DYNAMIQUE MANQUANT -->
+        <div class="sidebar-footer" style="margin-top: auto; background-color: #1e293b; padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 12px;">
+            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 12px; flex-shrink: 0;">
+                {{ strtoupper(substr(session('user_fullname', 'AD'), 0, 2)) }}
+            </div>
+                        <div>
+                <!-- Nettoyage de la valeur de secours pour éliminer toute trace fixe -->
+                <strong class="d-block text-white" style="font-size: 12.5px;">
+                    {{ session('user_fullname', 'Admin Local') }}
+                </strong>
+                <span style="font-size: 10.5px; color: #64748b;">Administrateur Système</span>
+            </div>
+
+        </div>
 
     </div>
     <div class="main-content">

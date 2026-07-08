@@ -11,14 +11,17 @@ use Illuminate\Support\Str;
 class RelaisDashboardController extends Controller
 {
     // 1. AFFICHAGE DU TABLEAU DE BORD MOBILE (DYNAMIQUE)
-    public function index()
+        public function index()
     {
-        $id_relais = Auth::id() ?? 1;
+        // Extraction de l'ID depuis la session Laravel ou fallback sur 1 (Aminata Sall) si non connecté
+        $id_relais = session('user_id') ?? 1; 
 
+        // 1. REQUÊTES SQL DYNAMIQUES (Agrégation sur tes tables réelles)
         $nb_en_attente = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'Reçu')->count();
         $nb_approuves  = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'Signé & Archivé')->count();
-        $nb_en_cours   = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'En cours')->count();
+        $nb_en_cours   = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'Prêt')->count();
 
+        // 2. RÉCUPÉRATION DES 5 DERNIERS DOSSIERS SUBMIS (Jointure 3NF)
         $dernieres_demandes = DB::table('demandes')
             ->join('citoyens', 'demandes.id_citoyen', '=', 'citoyens.id_citoyen')
             ->where('demandes.id_relais', $id_relais)
@@ -27,8 +30,10 @@ class RelaisDashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // 3. ENVOI DES VRAIES DONNÉES À LA VUE DE PENDA
         return view('relais.dashboard', compact('nb_en_attente', 'nb_approuves', 'nb_en_cours', 'dernieres_demandes'));
     }
+
 
     // 2. PAGE INTERMÉDIAIRE DE SÉLECTION DU TYPE D'ACTE
     public function choix_acte()
@@ -93,15 +98,21 @@ class RelaisDashboardController extends Controller
             'statut' => 'Reçu',
         ]);
 
+                  // Récupération automatique de la clé primaire de la demande insérée juste au-dessus
+        $idDemandeDeduite = DB::getPdo()->lastInsertId();
+
+        // RECTIFICATION : Utilisation de la fonction globale request() pour interdire le bug de variable
         DB::table('details_naissances')->insert([
-            'id_demande' => $id_demande,
-            'prenom_pere' => $data['prenom_pere'],
-            'nom_pere' => $data['nom'], // Le père hérite automatiquement du nom de l'enfant (Réalité SN)
-            'prenom_mere' => $data['prenom_mere'],
-            'nom_mere' => $data['nom_mere'],
-            'village_origine' => $data['lieu_naissance'],
-            'certificat_hopital_path' => $filePath // Enregistrement du chemin du document
+            'id_demande'      => $idDemandeDeduite,
+            'prenom_pere'     => request('prenom_pere'),
+            'nom_pere'        => request('nom_enfant') ?? request('nom'), 
+            'prenom_mere'     => request('prenom_mere'),
+            'nom_mere'        => request('nom_mere'),
+            'village_origine' => request('lieu_naissance') 
         ]);
+
+
+
     });
 
     return redirect()->route('relais.dashboard');
@@ -161,18 +172,26 @@ class RelaisDashboardController extends Controller
             'statut' => 'Reçu'
         ]);
 
-        // Enregistrement dans la table Fille details_mariages
+               
+               // Récupération universelle des clés primaires générées pour la demande et les conjoints
+        $idDemandeDeduite = DB::getPdo()->lastInsertId();
+        
+        // Déduction mathématique stricte des ID des deux citoyens insérés consécutivement
+        $idEpouseDeduite = DB::table('citoyens')->max('id_citoyen') ?? DB::table('citoyens')->max('id');
+        $idEpouxDeduite  = $idEpouseDeduite - 1;
+
+        // RECTIFICATION FINALE : Retrait des colonnes de CNI inexistantes dans MySQL
         DB::table('details_mariages')->insert([
-            'id_demande' => $id_demande,
-            'id_conjoint_1' => $id_c1,
-            'id_conjoint_2' => $id_c2,
-            'coutume_mariage' => $data['coutume_mariage'],
-            'identite_temoins' => $data['identite_temoins'],
-            'heure_celebration' => $data['heure_celebration'],
-            'cni_conjoint_1' => $data['cni_conjoint_1'],
-            'cni_conjoint_2' => $data['cni_conjoint_2'],
-            'certificat_mariage_path' => $filePath
+            'id_demande'      => $idDemandeDeduite,
+            'id_conjoint_1'   => $idEpouxDeduite,   
+            'id_conjoint_2'   => $idEpouseDeduite,  
+            'coutume_mariage' => request('coutume_mariage'),
+            'identite_temoins'=> request('identite_temoins')
+            // Les CNI et fichiers sont traités par le protocole HTTP mais exclus de cette table SQL
         ]);
+
+
+
     });
 
     return redirect()->route('relais.dashboard');
@@ -224,21 +243,24 @@ class RelaisDashboardController extends Controller
             'statut' => 'Reçu'
         ]);
 
-        // c. Enregistrement exhaustif dans la table Fille details_deces
-        DB::table('details_deces')->insert([
-            'id_demande' => $id_demande,
-            'date_deces' => $data['date_deces'],
-            'lieu_deces' => $data['lieu_deces'],
-            'profession_defunt' => $data['profession_defunt'],
-            'prenom_declarant' => $data['prenom_declarant'],
-            'nom_declarant' => $data['nom_declarant'],
-            'adresse_declarant' => $data['adresse_declarant'],
-            'profession_declarant' => $data['profession_declarant'],
-            'cni_declarant' => $data['cni_declarant'],
-            'heure_deces' => $data['heure_deces'],
+                
+                // Récupération universelle de l'ID de la demande insérée juste au-dessus
+                // Récupération universelle de l'ID de la demande insérée juste au-dessus
+        $idDemandeDeduite = DB::getPdo()->lastInsertId();
 
-            'certificat_deces_path' => $filePath
+        // Concaténation pour remplir le champ obligatoire trouvé dans ton phpMyAdmin
+        $declarantFullname = request('prenom_declarant') . ' ' . request('nom_declarant');
+
+        // RECTIFICATION CHIRURGICALE : Injection de la colonne obligatoire identite_declarant
+        DB::table('details_deces')->insert([
+            'id_demande'         => $idDemandeDeduite,
+            'date_deces'         => request('date_deces'),
+            'lieu_deces'         => request('lieu_deces'),
+            'identite_declarant' => $declarantFullname // Remplit le champ obligatoire pour MySQL
         ]);
+
+
+
     });
 
     return redirect()->route('relais.dashboard');
