@@ -9,10 +9,10 @@ class Utilisateur extends Authenticatable
 {
     use Notifiable;
 
-    // Nom de ta table dans phpMyAdmin
+    // Nom de ma table 
     protected $table = 'utilisateurs';
 
-    // Nom de ta clé primaire
+    // Nom de ma clé primaire
     protected $primaryKey = 'id_user';
 
     // Champs autorisés à être manipulés

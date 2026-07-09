@@ -23,7 +23,7 @@
 </head>
 <body>
 
-    <!-- SIDEBAR CORRIGÉE SANS LE DOUBLON "NAVIGATION" -->
+    <!-- SIDEBAR  -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="sidebar-brand-icon">🛡️</div>
@@ -35,7 +35,7 @@
         
         <span class="nav-section-title">Navigation</span>
         <ul class="sidebar-nav">
-            <!-- RECTIFICATION DE L'ONGLET ACTIF POUR CETTE PAGE -->
+            <!--  L'ONGLET ACTIF POUR CETTE PAGE -->
             <li class="sidebar-nav-item"><a href="{{ route('mairie.tableau_de_bord') }}" class="sidebar-nav-link active"><span>📊 Tableau de bord</span></a></li>
             <li class="sidebar-nav-item"><a href="{{ route('mairie.dashboard') }}" class="sidebar-nav-link"><span>📂 File d'attente</span><span class="badge bg-danger rounded-pill" style="font-size: 10px; margin-left: 5px;">{{ $nb_en_attente }}</span></a></li>
             <li class="sidebar-nav-item"><a href="{{ route('mairie.documents') }}" class="sidebar-nav-link"><span>📄 Documents civils</span></a></li>
@@ -57,7 +57,7 @@
 
     </div>
 
-    <!-- CONTENU PRINCIPAL DE TA MAQUETTE -->
+    <!-- CONTENU PRINCIPAL DE MA MAQUETTE -->
     <div class="main-content">
         <div class="mb-4">
             <h1 class="h3 fw-bold text-dark mb-1">Aperçu Général de l'Activité</h1>

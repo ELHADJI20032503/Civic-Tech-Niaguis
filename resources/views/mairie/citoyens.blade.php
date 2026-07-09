@@ -33,7 +33,7 @@
         </div>
         <span class="nav-section-title">Navigation</span>
                 <span class="nav-section-title">Navigation</span>
-                <!-- BARRE LATÉRALE DYNAMIQUE INTELLIGENTE (ZÉRO ERREUR) -->
+                <!-- BARRE LATÉRALE DYNAMIQUE -->
         <span class="nav-section-title">Navigation</span>
         <ul class="sidebar-nav">
             <!-- 1. TABLEAU DE BORD -->
@@ -65,7 +65,7 @@
                 </a>
             </li>
             
-            <!-- 5. RAPPORTS (Lien propre distinct ou temporaire) -->
+            <!-- 5. RAPPORTS  -->
             <li class="sidebar-nav-item">
                 <a href="{{ route('mairie.rapports') }}" class="sidebar-nav-link @if(Route::is('mairie.rapports')) active @endif">
                     <span>📈 Rapports</span>
@@ -111,7 +111,7 @@
         </div>
 
         <div class="data-card">
-            <!-- RECHERCHE REACTIVE LOCAL JS (Pour impressionner le jury) -->
+            <!-- RECHERCHE REACTIVE LOCAL JS  -->
             <div class="mb-4">
                 <input type="text" id="searchCitoyen" class="form-control" style="max-width: 400px; border-radius: 8px;" placeholder="🔍 Filtrer par nom ou prénom en temps réel..." onkeyup="filterTable()">
             </div>
@@ -145,7 +145,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE FILTRAGE INSTANTANÉ -->
+    <!-- SCRIPT DE FILTRAGE  -->
     <script>
         function filterTable() {
             let input = document.getElementById("searchCitoyen");

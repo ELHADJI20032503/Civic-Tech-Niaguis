@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -10,9 +11,9 @@ use App\Models\Utilisateur;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
-        // 1. Validation stricte des données du formulaire (Sécurité NF-02)
+        // 1. Validation stricte des données du formulaire 
         $credentials = $request->validate([
             'login' => 'required|string',
             'password' => 'required|string',
@@ -24,21 +25,17 @@ class LoginController extends Controller
         // 2. Recherche stricte de l'utilisateur par login.
         $user = DB::table('utilisateurs')->where('login', $loginInput)->first();
 
-        // Cas spécial : autoriser l'alias admin si le login exact n'existe pas.
+        //  autoriser l'alias admin si le login exact n'existe pas.
         if (!$user && in_array(strtolower($loginInput), ['admin', 'admin@niaguis.gouv'], true)) {
             $user = DB::table('utilisateurs')->where('role', 'admin')->first();
         }
 
-        // Si l'utilisateur n'existe pas, on refuse la connexion.
-        // La création automatique d'un compte a été retirée pour des raisons
-        // de sécurité et doit être effectuée via l'administration.
         if (!$user) {
             return back()->withInput()->withErrors([
                 'login' => 'Identifiant ou mot de passe incorrect.',
             ]);
         }
 
-        // Vérification du mot de passe. Aucun bypass littéral n'est autorisé.
         $passwordValide = $user && Hash::check($passwordInput, $user->password_hash);
 
         if ($passwordValide) {
@@ -50,11 +47,6 @@ class LoginController extends Controller
             session(['auth_user_id' => $userId]);
             session(['user_fullname' => $user->prenom . ' ' . $user->nom]);
             session(['user_id' => $userId]);
-
-            if (session('premier_allumage') === true) {
-                session()->forget('premier_allumage');
-                return redirect()->route('profil.view');
-            }
 
             $roleActuel = strtolower($user->role ?? '');
             if ($roleActuel === 'admin') {

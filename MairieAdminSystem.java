@@ -14,7 +14,7 @@ public class MairieAdminSystem {
     private static final String PASSWORD = ""; 
 
     public static void main(String[] args) {
-        // Correction des caractères accentués dans la console Windows
+        
         try {
             System.setOut(new PrintStream(System.out, true, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -122,7 +122,7 @@ public class MairieAdminSystem {
         System.out.println("• Recettes réelles en caisse (Table paiements) : " + totalReel + " FCFA");
     }
 
-           // 4. LOGIQUE MÉTIER RECTIFIÉE SÉPARANT STRICTEMENT LES TYPES D'ACTES
+           // 4. LOGIQUE MÉTIER  SÉPARANT STRICTEMENT LES TYPES D'ACTES
     private static void enregistrerDemandeActe(Connection conn, Scanner scanner) throws SQLException {
         System.out.println("\n📝 --- NOUVELLE DÉCLARATION D'ACTE (1 à 3) ---");
         System.out.println("Choisissez le type d'acte :");
@@ -132,7 +132,7 @@ public class MairieAdminSystem {
         System.out.print("👉 Votre choix (1-3) : ");
         
         int typeChoix = scanner.nextInt();
-        scanner.nextLine(); // Consommer impérativement le retour à la ligne restant
+        scanner.nextLine(); // Consommer  le retour à la ligne restant
 
         String typeActe;
         String evenementLabel;
@@ -183,7 +183,7 @@ public class MairieAdminSystem {
             return;
         }
 
-        // Étape 1 : Insertion du citoyen dans la table 3NF en fonction du type d'acte
+        // Étape 1 : Insertion du citoyen dans la table  en fonction du type d'acte
         String sqlCitoyen = "INSERT INTO citoyens (prenom, nom, genre, date_naissance, lieu_naissance, date_mariage, lieu_mariage, date_deces, lieu_deces) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         int idCitoyen = -1;
 

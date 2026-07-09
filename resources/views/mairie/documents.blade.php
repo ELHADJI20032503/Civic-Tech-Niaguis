@@ -33,7 +33,7 @@
         </div>
         <span class="nav-section-title">Navigation</span>
                 <span class="nav-section-title">Navigation</span>
-                <!-- BARRE LATÉRALE DYNAMIQUE INTELLIGENTE (ZÉRO ERREUR) -->
+                <!-- BARRE LATÉRALE DYNAMIQUE  -->
         <span class="nav-section-title">Navigation</span>
         <ul class="sidebar-nav">
             <!-- 1. TABLEAU DE BORD -->
@@ -65,7 +65,7 @@
                 </a>
             </li>
             
-            <!-- 5. RAPPORTS (Lien propre distinct ou temporaire) -->
+            <!-- 5. RAPPORTS  -->
             <li class="sidebar-nav-item">
                 <a href="{{ route('mairie.rapports') }}" class="sidebar-nav-link @if(Route::is('mairie.rapports')) active @endif">
                     <span>📈 Rapports</span>
@@ -128,7 +128,7 @@
                                 <td><span class="badge bg-dark">Acte de {{ $acte->type_acte }}</span></td>
                                 <td><span class="badge bg-success-subtle text-success fw-bold px-3 py-1">📜 Officié & Scellé</span></td>
                                 <td class="text-end">
-                                    <!-- SIMULATION D'IMPRESSION SYSTÈME (Effet garanti devant le jury) -->
+                                    <!-- SIMULATION D'IMPRESSION SYSTÈME  -->
                                     <button class="btn btn-sm btn-outline-success" onclick="window.print()">🖨️ Imprimer l'Acte Officiel</button>
                                 </td>
                             </tr>

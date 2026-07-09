@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Relais - Civic-Tech Niaguis</title>
-    <!-- Chargement local (NF-01 Intranet Mairie) -->
+    <!-- Chargement local  -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <style>
         body { background-color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
@@ -29,7 +29,7 @@
 </head>
 <body>
 
-    <!-- Barre de Navigation Institutionnelle Fluide -->
+    <!-- Barre de Navigation Institutionnelle  -->
     <nav class="navbar navbar-custom d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-2">
             <span style="font-size: 20px;">🛡️</span>
@@ -44,11 +44,11 @@
         </div>
     </nav>
 
-    <!-- Conteneur Principal Flexible Grille Bootstrap -->
+    <!-- Conteneur Principal Flexible  -->
     <div class="container my-4 mb-5">
         <div class="row g-4">
             
-            <!-- COLONNE GAUCHE : IDENTITÉ ET STATISTIQUES -->
+            <!--  IDENTITÉ ET STATISTIQUES -->
             <div class="col-lg-4">
                 <!-- Carte d'identité du Relais connecté -->
                 <div class="welcome-card">
@@ -86,7 +86,7 @@
                 </div>
             </div>
 
-            <!-- COLONNE DROITE : ACTIONS ET HISTORIQUE -->
+            <!--  ACTIONS ET HISTORIQUE -->
             <div class="col-lg-8">
                 <!-- Actions Tactiles Grands Formulaires -->
                 <h5 class="text-muted fw-bold mb-3" style="font-size: 12px; letter-spacing: 0.5px;">ACTIONS RAPIDES SUR LE TERRAIN</h5>
@@ -102,7 +102,7 @@
                     <span class="text-muted fw-bold">➔</span>
                 </a>
 
-                <!-- Liste Dynamique des Dernières Demandes Extrayant de MySQL -->
+                <!-- Liste Dynamique des Dernières Demandes  -->
                 <h5 class="text-muted fw-bold my-4" style="font-size: 12px; letter-spacing: 0.5px;">HISTORIQUE DES 5 DERNIÈRES DEMANDES SOUMISES</h5>
 
                 @forelse($dernieres_demandes as $demande)

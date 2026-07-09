@@ -20,7 +20,7 @@
                 <!-- BARRE LATÉRALE SUPER-ADMINISTRATEUR ALIGNÉE SUR LES ROUTES RÉELLES -->
         <span class="nav-section-title">Panneau Administrateur</span>
         <ul class="sidebar-nav">
-            <!-- 1. TABLEAU DE BORD (VUE D'ENSEMBLE) -->
+            <!-- 1. TABLEAU DE BORD  -->
             <li class="sidebar-nav-item">
                 <a href="{{ route('admin.dashboard') }}" class="sidebar-nav-link @if(Route::is('admin.dashboard')) active @endif">
                     <span>📂 Tableau de bord</span>
@@ -56,13 +56,13 @@
                 </a>
             </li>
         </ul>
-                 <!-- AJOUT DU FOOTER DYNAMIQUE MANQUANT -->
+                 <!-- AJOUT DU FOOTER DYNAMIQUE -->
         <div class="sidebar-footer" style="margin-top: auto; background-color: #1e293b; padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 12px;">
             <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 12px; flex-shrink: 0;">
                 {{ strtoupper(substr(session('user_fullname', 'AD'), 0, 2)) }}
             </div>
                         <div>
-                <!-- Nettoyage de la valeur de secours pour éliminer toute trace fixe -->
+                <!-- Nettoyage de la valeur de secours  -->
                 <strong class="d-block text-white" style="font-size: 12.5px;">
                     {{ session('user_fullname', 'Admin Local') }}
                 </strong>

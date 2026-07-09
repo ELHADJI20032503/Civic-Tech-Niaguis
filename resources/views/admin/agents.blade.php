@@ -50,20 +50,20 @@
                 </a>
             </li>
             
-            <!-- 5. CONFIGURATION CORE SYSTEM -->
+            <!-- 5. CONFIGURATION  -->
             <li class="sidebar-nav-item">
                 <a href="{{ route('admin.configuration') }}" class="sidebar-nav-link @if(Route::is('admin.configuration')) active @endif">
                     <span>⚙️ Configuration</span>
                 </a>
             </li>
         </ul>
-                <!-- AJOUT DU FOOTER DYNAMIQUE MANQUANT -->
+                <!-- AJOUT DU FOOTER  -->
         <div class="sidebar-footer" style="margin-top: auto; background-color: #1e293b; padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 12px;">
             <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 12px; flex-shrink: 0;">
                 {{ strtoupper(substr(session('user_fullname', 'AD'), 0, 2)) }}
             </div>
                         <div>
-                <!-- Nettoyage de la valeur de secours pour éliminer toute trace fixe -->
+                <!-- Nettoyage de la valeur de secours  -->
                 <strong class="d-block text-white" style="font-size: 12.5px;">
                     {{ session('user_fullname', 'Admin Local') }}
                 </strong>
@@ -79,10 +79,11 @@
             <h5 class="fw-bold h6 mb-3 text-dark">Enregistrer un nouvel Agent de Mairie ou Relais</h5>
             <form action="{{ route('admin.agents.store') }}" method="POST" style="max-width: 500px;">
                 @csrf
-                <div class="mb-3"><label class="form-label small fw-bold">Nom complet de l'agent</label><input type="text" class="form-control" name="nom" required placeholder="Ex: Fatou Sarr"></div>
-                <div class="mb-3"><label class="form-label small fw-bold">Adresse Email de connexion</label><input type="email" class="form-control" name="email" required placeholder="name@niaguis.sn"></div>
-                <div class="mb-3"><label class="form-label small fw-bold">Rôle Applicatif</label><select class="form-select" name="role"><option value="Relais">Relais Terrain (Aminata Sall...)</option><option value="Mairie">Officier d'État Civil (Moussa Baldé...)</option></select></div>
-                <div class="mb-3"><label class="form-label small fw-bold">Mot de passe par défaut</label><input type="password" class="form-control" name="mot_de_passe" required value="1234"></div>
+                <div class="mb-3"><label class="form-label small fw-bold">Prénom</label><input type="text" class="form-control" name="prenom" required placeholder="Ex: Fatou"></div>
+                <div class="mb-3"><label class="form-label small fw-bold">Nom</label><input type="text" class="form-control" name="nom" required placeholder="Ex: Sarr"></div>
+                <div class="mb-3"><label class="form-label small fw-bold">Adresse Email de connexion</label><input type="email" class="form-control" name="login" required placeholder="name@niaguis.sn"></div>
+                <div class="mb-3"><label class="form-label small fw-bold">Rôle Applicatif</label><select class="form-select" name="role"><option value="relais">Relais Terrain (Aminata Sall...)</option><option value="mairie">Officier d'État Civil (Moussa Baldé...)</option></select></div>
+                <div class="mb-3"><label class="form-label small fw-bold">Mot de passe temporaire</label><input type="password" class="form-control" name="password" required placeholder="Saisir un mot de passe sécurisé"></div>
                 <button type="submit" class="btn btn-success w-100 fw-bold">💾 Activer le compte de l'agent</button>
             </form>
         </div>
