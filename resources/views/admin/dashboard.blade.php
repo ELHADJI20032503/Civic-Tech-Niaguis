@@ -42,7 +42,7 @@
 </head>
 <body>
 
-    <!-- SIDEBAR DARK PARFAITEMENT STRUCTURÉE -->
+    <!-- SIDEBAR  STRUCTURÉE -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <span style="font-size: 22px;">🛡️</span>
@@ -171,7 +171,7 @@
                 </div>
             </div>
 
-            <!-- VOLET LATÉRAL DROIT : ACTIONS RAPIDES ET SANTÉ DU SYSTÈME -->
+            <!--  ACTIONS RAPIDES ET SANTÉ DU SYSTÈME -->
             <div class="col-lg-3">
                 <div class="chart-card">
                     <h6 class="fw-bold text-dark small mb-3">Actions Rapides</h6>

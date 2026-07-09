@@ -36,7 +36,7 @@
 
         <span class="nav-section-title">Navigation</span>
                 <span class="nav-section-title">Navigation</span>
-                <!-- BARRE LATÉRALE DYNAMIQUE INTELLIGENTE (ZÉRO ERREUR) -->
+                <!-- BARRE LATÉRALE DYNAMIQUE  -->
         <span class="nav-section-title">Navigation</span>
         <ul class="sidebar-nav">
             <!-- 1. TABLEAU DE BORD -->
@@ -68,7 +68,7 @@
                 </a>
             </li>
             
-            <!-- 5. RAPPORTS (Lien propre distinct ou temporaire) -->
+            <!-- 5. RAPPORTS  -->
             <li class="sidebar-nav-item">
                 <a href="{{ route('mairie.rapports') }}" class="sidebar-nav-link @if(Route::is('mairie.rapports')) active @endif">
                     <span>📈 Rapports</span>

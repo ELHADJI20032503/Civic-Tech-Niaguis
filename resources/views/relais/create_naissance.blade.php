@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <!-- Barre de Navigation Institutionnelle Épurée -->
+    <!-- Barre de Navigation Institutionnelle -->
     <nav class="navbar navbar-custom d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-3">
             <a href="{{ route('relais.choix_acte') }}" class="text-white text-decoration-none h4 mb-0">←</a>

@@ -29,7 +29,7 @@
 </head>
 <body>
 
-    <!-- BARRE LATÉRALE MUNICIPALE HARMONISÉE -->
+    <!-- BARRE LATÉRALE MUNICIPALE  -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="sidebar-brand-icon">🛡️</div>
@@ -77,7 +77,7 @@
             <p class="text-muted small mb-0">Ajustez les règles métiers, les alertes citoyens et les tarifs d'état civil de la commune.</p>
         </div>
 
-        <!-- FORMULAIRE TECHNIQUE SIMULÉ -->
+        <!-- FORMULAIRE TECHNIQUE  -->
         <form onsubmit="alert('Paramètres municipaux sauvegardés avec succès !'); return false;">
             
             <!-- REGLES FINANCIERES -->

@@ -1,27 +1,17 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1
--- Généré le : dim. 05 juil. 2026 à 05:53
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+
 
 --
 -- Base de données : `civic-tech-niaguis`
 --
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `cache`
@@ -45,7 +35,7 @@ CREATE TABLE `cache_locks` (
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `citoyens`
@@ -57,7 +47,7 @@ CREATE TABLE `citoyens` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `demandes`
@@ -69,9 +59,9 @@ CREATE TABLE `demandes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
---
+
+
 -- Structure de la table `details_deces`
 --
 
@@ -89,7 +79,7 @@ CREATE TABLE `details_deces` (
   `heure_deces` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `details_mariages`
@@ -105,7 +95,7 @@ CREATE TABLE `details_mariages` (
   `certificat_mariage_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+-
 
 --
 -- Structure de la table `details_naissances`
@@ -119,7 +109,7 @@ CREATE TABLE `details_naissances` (
   `certificat_hopital_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `failed_jobs`
@@ -135,9 +125,9 @@ CREATE TABLE `failed_jobs` (
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
---
+
+
 -- Structure de la table `jobs`
 --
 
@@ -151,7 +141,7 @@ CREATE TABLE `jobs` (
   `created_at` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `job_batches`
@@ -170,7 +160,6 @@ CREATE TABLE `job_batches` (
   `finished_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
 --
 -- Structure de la table `journal_activites`
@@ -182,7 +171,7 @@ CREATE TABLE `journal_activites` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `migrations`
@@ -224,7 +213,7 @@ CREATE TABLE `paiements` (
   `mode_paiement` varchar(100) NOT NULL DEFAULT 'Espèces (Régie Recettes Mairie)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `password_reset_tokens`
@@ -236,7 +225,7 @@ CREATE TABLE `password_reset_tokens` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `sessions`
@@ -259,7 +248,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 ('NHDkHY5SYOymQ9PwvPrJ2Hcie5fpUs5eqVqUbn9k', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTTZiMTFTRWRNRGhEdW1sMDBwajUyVTUxQmhBa09TR040WkZDbk9kbCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1782952577),
 ('yxTx1acN8Cnl8VIsQCIqINgNjoovLk1wEmg5ngRU', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRWZOM1YyeEZ1YTJMT29tNVFiVWRCUDZZNGRXaE04Y3lpelVJWWs2OCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1782960052);
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `tarifs`
@@ -271,7 +260,7 @@ CREATE TABLE `tarifs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
+
 
 --
 -- Structure de la table `users`
@@ -295,9 +284,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Test User', 'test@example.com', '2026-07-02 00:17:34', '$2y$12$iutb0ix9CbCmBzaDZtFroOq5Qci8GHYXre5GSYF96hShwhAKg7mrC', 'nZRIMOjDg6', '2026-07-02 00:17:35', '2026-07-02 00:17:35');
 
---
--- Index pour les tables déchargées
---
+
 
 --
 -- Index pour la table `cache`
@@ -485,6 +472,4 @@ ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

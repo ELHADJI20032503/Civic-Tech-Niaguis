@@ -20,6 +20,7 @@ class ProfileController extends Controller
         session(['active_profile' => $roleChoisi]);
 
         // 3. AIGUILLAGE IMMÉDIAT ET FLUIDE SANS INTERROGATION DU TYPE ENUM MYSQL
+        // Remarque: match() permet une redirection claire selon le rôle choisi.
         return match($roleChoisi) {
             'admin'  => redirect()->route('admin.dashboard'),
             'agent'  => redirect()->route('mairie.tableau_de_bord'),

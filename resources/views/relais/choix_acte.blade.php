@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choisir le type d'acte - Civic-Tech Niaguis</title>
-    <!-- Chargement local de Bootstrap (Conformité NF-01) -->
+    <!-- Chargement local de Bootstrap -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <style>
         body { background-color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
@@ -34,7 +34,7 @@
         <span class="badge bg-white text-success px-3 py-2 fw-bold">Espace Saisie</span>
     </nav>
 
-    <!-- Grille de Sélection Responsive en 3 Colonnes Équilibrées -->
+    <!-- Grille de Sélection Responsive  -->
     <div class="container my-5">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-dark h4 mb-2">Quel type d'acte souhaitez-vous enregistrer ?</h2>

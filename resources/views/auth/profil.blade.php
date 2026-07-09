@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sélection du profil - Civic-Tech Niaguis</title>
-    <!-- Chargement local de Bootstrap (Conformité Intranet NF-01) -->
+    <!-- Usage local de Bootstrap  -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <style>
         body { 
@@ -247,23 +247,23 @@
     </div>
 
     <!-- Script de sélection réactif local -->
-        <!-- Script de sélection réactif local corrigé -->
+        
     <script>
         function selectProfile(role) {
-            // 1. Injecte la valeur dans le champ caché pour le contrôleur PHP
+            // 1. J'Injecte la valeur dans le champ caché pour le contrôleur PHP
             document.getElementById('chosen_role').value = role;
             
-            // 2. Réinitialise le style visuel des deux cartes
+            // 2. Je Réinitialise le style visuel des deux cartes
             document.getElementById('card_relais').classList.remove('selected');
             document.getElementById('card_officier').classList.remove('selected-officier');
             
-            // 3. Active le bouton de soumission HTML
+            // 3. J'Active le bouton de soumission HTML
             const btnSubmit = document.getElementById('btn_submit');
             btnSubmit.removeAttribute('disabled');
             btnSubmit.classList.add('active');
             document.getElementById('hint_text').style.display = 'none';
 
-            // 4. Applique le style de bordure verte ou bleue (classList.add obligatoire)
+            // 4. J'Applique le style de bordure verte ou bleue 
             if(role === 'relais') {
                 document.getElementById('card_relais').classList.add('selected');
             } else {

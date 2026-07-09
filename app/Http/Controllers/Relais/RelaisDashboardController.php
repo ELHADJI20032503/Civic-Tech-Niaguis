@@ -10,18 +10,23 @@ use Illuminate\Support\Str;
 
 class RelaisDashboardController extends Controller
 {
-    // 1. AFFICHAGE DU TABLEAU DE BORD MOBILE (DYNAMIQUE)
+    // 1. AFFICHAGE DU TABLEAU DE BORD MOBILE 
+    /**
+     * Affiche le tableau de bord du relais mobile avec ses KPIs et dernières demandes.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
         public function index()
     {
-        // Extraction de l'ID depuis la session Laravel ou fallback sur 1 (Aminata Sall) si non connecté
+        // Extraction de l'ID depuis la session Laravel ou valeur de repli sur 1 (Aminata Sall) si non connecté
         $id_relais = session('user_id') ?? 1; 
 
-        // 1. REQUÊTES SQL DYNAMIQUES (Agrégation sur tes tables réelles)
+        // 1. REQUÊTES SQL DYNAMIQUES 
         $nb_en_attente = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'Reçu')->count();
         $nb_approuves  = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'Signé & Archivé')->count();
         $nb_en_cours   = DB::table('demandes')->where('id_relais', $id_relais)->where('statut', 'Prêt')->count();
 
-        // 2. RÉCUPÉRATION DES 5 DERNIERS DOSSIERS SUBMIS (Jointure 3NF)
+        // 2. RÉCUPÉRATION DES 5 DERNIERS DOSSIERS SUBMIS 
         $dernieres_demandes = DB::table('demandes')
             ->join('citoyens', 'demandes.id_citoyen', '=', 'citoyens.id_citoyen')
             ->where('demandes.id_relais', $id_relais)
@@ -36,27 +41,53 @@ class RelaisDashboardController extends Controller
 
 
     // 2. PAGE INTERMÉDIAIRE DE SÉLECTION DU TYPE D'ACTE
+    /**
+     * Affiche la page de choix du type d'acte à créer.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function choix_acte()
     {
         return view('relais.choix_acte');
     }
 
     // 3. AFFICHAGE DES FORMULAIRES DE SAISIE
+    /**
+     * Affiche le formulaire de saisie pour un acte de naissance.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create()
     {
         return view('relais.create_naissance');
     }
 
+    /**
+     * Affiche le formulaire de saisie pour un acte de mariage.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create_mariage()
     {
         return view('relais.create_mariage');
     }
 
+    /**
+     * Affiche le formulaire de saisie pour un acte de décès.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create_deces()
     {
         return view('relais.create_deces');
     }
 
+    /**
+     * Traite la création d'un acte de naissance soumis par le relais.
+     *
+     * @param Request $request Données du formulaire (nom, prenom, date_naissance, ...)
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
 {
     // 1. Validation intégrant le fichier d'authentification de l'hôpital et l'heure
@@ -80,7 +111,7 @@ class RelaisDashboardController extends Controller
         $filePath = $request->file('certificat_hopital')->store('certificats', 'public');
     }
 
-    // 3. Persistance Transactionnelle (NF-02)
+    // 3. Persistance Transactionnelle 
     DB::transaction(function () use ($data, $filePath) {
         $id_citoyen = DB::table('citoyens')->insertGetId([
             'nom' => $data['nom'],
@@ -101,7 +132,7 @@ class RelaisDashboardController extends Controller
                   // Récupération automatique de la clé primaire de la demande insérée juste au-dessus
         $idDemandeDeduite = DB::getPdo()->lastInsertId();
 
-        // RECTIFICATION : Utilisation de la fonction globale request() pour interdire le bug de variable
+        //  Utilisation de la fonction globale request() pour interdire le bug de variable
         DB::table('details_naissances')->insert([
             'id_demande'      => $idDemandeDeduite,
             'prenom_pere'     => request('prenom_pere'),
@@ -119,8 +150,14 @@ class RelaisDashboardController extends Controller
 }
 
 
-    // 5. INSERTION TRANSACTIONNELLE : ACTE DE MARIAGE (3NF)
-   public function store_mariage(Request $request)
+    // 5. INSERTION TRANSACTIONNELLE : ACTE DE MARIAGE 
+    /**
+     * Traite la création d'un acte de mariage.
+     *
+     * @param Request $request Données du formulaire de mariage
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store_mariage(Request $request)
 {
     // 1. Validation complète
     $data = $request->validate([
@@ -143,7 +180,7 @@ class RelaisDashboardController extends Controller
         $filePath = $request->file('certificat_mariage')->store('certificats_mariages', 'public');
     }
 
-    // 3. Persistance Double Couche 3NF
+    // 3. Persistance Double Couche 
     DB::transaction(function () use ($data, $filePath) {
         // Enregistrement de l'Époux
         $id_c1 = DB::table('citoyens')->insertGetId([
@@ -176,11 +213,11 @@ class RelaisDashboardController extends Controller
                // Récupération universelle des clés primaires générées pour la demande et les conjoints
         $idDemandeDeduite = DB::getPdo()->lastInsertId();
         
-        // Déduction mathématique stricte des ID des deux citoyens insérés consécutivement
+        // Déduction  stricte des ID des deux citoyens insérés consécutivement
         $idEpouseDeduite = DB::table('citoyens')->max('id_citoyen') ?? DB::table('citoyens')->max('id');
         $idEpouxDeduite  = $idEpouseDeduite - 1;
 
-        // RECTIFICATION FINALE : Retrait des colonnes de CNI inexistantes dans MySQL
+        //  Retrait des colonnes de CNI inexistantes dans MySQL
         DB::table('details_mariages')->insert([
             'id_demande'      => $idDemandeDeduite,
             'id_conjoint_1'   => $idEpouxDeduite,   
@@ -197,7 +234,13 @@ class RelaisDashboardController extends Controller
     return redirect()->route('relais.dashboard');
 }
 
-    // 6. INSERTION TRANSACTIONNELLE : ACTE DE DÉCÈS (3NF)
+    // 6. INSERTION TRANSACTIONNELLE : ACTE DE DÉCÈS 
+    /**
+     * Traite la création d'un acte de décès.
+     *
+     * @param Request $request Données du formulaire de décès
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store_deces(Request $request)
 {
     // 1. Validation stricte du formulaire conforme à la réglementation
@@ -223,7 +266,7 @@ class RelaisDashboardController extends Controller
         $filePath = $request->file('certificat_deces')->store('certificats_deces', 'public');
     }
 
-    // 3. Persistance Double Couche 3NF (NF-02)
+    // 3. Persistance Double Couche 
     DB::transaction(function () use ($data, $filePath) {
         // a. Enregistrement du défunt dans la table Citoyens
         $id_citoyen = DB::table('citoyens')->insertGetId([
@@ -245,13 +288,12 @@ class RelaisDashboardController extends Controller
 
                 
                 // Récupération universelle de l'ID de la demande insérée juste au-dessus
-                // Récupération universelle de l'ID de la demande insérée juste au-dessus
         $idDemandeDeduite = DB::getPdo()->lastInsertId();
 
-        // Concaténation pour remplir le champ obligatoire trouvé dans ton phpMyAdmin
+        // Concaténation pour remplir le champ obligatoire trouvé dans mon phpMyAdmin
         $declarantFullname = request('prenom_declarant') . ' ' . request('nom_declarant');
 
-        // RECTIFICATION CHIRURGICALE : Injection de la colonne obligatoire identite_declarant
+        //  Injection de la colonne obligatoire identite_declarant
         DB::table('details_deces')->insert([
             'id_demande'         => $idDemandeDeduite,
             'date_deces'         => request('date_deces'),

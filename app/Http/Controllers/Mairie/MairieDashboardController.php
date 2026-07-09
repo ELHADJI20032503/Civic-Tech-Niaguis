@@ -8,7 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class MairieDashboardController extends Controller
 {
-    // 1. AFFICHAGE DE LA FILE D'ATTENTE AVEC KPIS DYNAMIQUES
+    // 1. AFFICHAGE DE LA FILE D'ATTENTE 
+    /**
+     * Affiche la file d'attente et les KPIs (nombre de dossiers, états, etc.).
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $total_dossiers = DB::table('demandes')->count();
@@ -43,6 +48,13 @@ class MairieDashboardController extends Controller
 
     
         // 2. LOGIQUE D'INSTRUCTION ET D'ENCAISSEMENT AU GUICHET CONFORME AUX COLONNES SQL
+        /**
+         * Valide ou traite un dossier en guichet (examiner / encaisser / rejeter).
+         *
+         * @param Request $request attendu: action (examiner|encaisser|rejeter)
+         * @param int $id_demande Identifiant de la demande à traiter
+         * @return \Illuminate\Http\RedirectResponse
+         */
         public function validerDossier(Request $request, $id_demande)
     {
         $request->validate([
@@ -51,7 +63,7 @@ class MairieDashboardController extends Controller
 
         $action = $request->input('action');
 
-        // Isolation transactionnelle stricte (Sécurité NF-02 contre les micro-coupures)
+        // Isolation transactionnelle stricte ( contre les micro-coupures)
         DB::transaction(function () use ($action, $id_demande) {
             if ($action === 'examiner') {
                 // Étape 1 : L'officier approuve la pièce justificative. L'acte passe au statut "Prêt"
@@ -79,7 +91,7 @@ class MairieDashboardController extends Controller
             } 
             else {
                 // Étape alternative : Rejet du dossier pour non-conformité des scans
-                DB::table('demandes')->where('id_demande', $id_demande)->update([ // Correction : Harmonisation de la variable
+                DB::table('demandes')->where('id_demande', $id_demande)->update([ //  Harmonisation de la variable
                     'statut' => 'Rejeté'
                 ]);
             }
@@ -89,12 +101,18 @@ class MairieDashboardController extends Controller
     }
 
 
-        // 3. EXTRACTION DU REGISTRE CENTRALISÉ DES CITOYENS (JALON 5 BACKEND)
+        // 3. EXTRACTION DU REGISTRE CENTRALISÉ DES CITOYENS 
+    /**
+     * Retourne la liste des citoyens pour affichage.
+     *
+     * @param Request $request (optionnel)
+     * @return \Illuminate\Contracts\View\View
+     */
     public function citoyens(Request $request)
     {
         $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
         
-        // Récupération de tous les citoyens enregistrés en base 3NF
+        // Récupération de tous les citoyens enregistrés en base 
         $citoyens = DB::table('citoyens')
             ->orderBy('nom', 'asc')
             ->orderBy('prenom', 'asc')
@@ -104,6 +122,11 @@ class MairieDashboardController extends Controller
     }
       // 4. LOGIQUE D'ANALYSE ET STATISTIQUES MUNICIPALES 
         
+    /**
+     * Fournit des statistiques municipales (par type d'acte, recettes, etc.).
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function statistiques()
     {
         $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
@@ -124,6 +147,11 @@ class MairieDashboardController extends Controller
     }
 
     // 5. RAPPORTS MUNICIPAUX
+    /**
+     * Affiche la page de rapports municipaux.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function rapports()
     {
         $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
@@ -131,6 +159,11 @@ class MairieDashboardController extends Controller
     }
 
     // 6. PARAMÈTRES DE SITE MAIRIE
+    /**
+     * Affiche les paramètres du site pour la section mairie.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function parametres()
     {
         $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
@@ -138,11 +171,16 @@ class MairieDashboardController extends Controller
     }
 
         // 7. REGISTRE DES DOCUMENTS OFFICIELS ARCHIVÉS
+    /**
+     * Liste les documents officiels archivés (actes signés & archivés).
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function documents()
     {
         $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
 
-        // Utilisation de date_creation (le vrai champ de ta table) pour le tri SQL
+        // Utilisation de date_creation  pour le tri SQL
         $actes_archives = DB::table('demandes')
             ->join('citoyens', 'demandes.id_citoyen', '=', 'citoyens.id_citoyen')
             ->where('demandes.statut', 'Signé & Archivé')
@@ -154,6 +192,11 @@ class MairieDashboardController extends Controller
     }
 
     // 6. LOGIQUE DE COMMANDEMENT DU TABLEAU DE BORD PRINCIPAL (BACKEND)
+    /**
+     * Back-end du tableau de bord principal pour la mairie .
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function tableauDeBord()
     {
         $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();

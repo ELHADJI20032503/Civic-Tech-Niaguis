@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminDashboardController extends Controller
 {
     // Météorologie des notifications pour la barre latérale
-    private function getNbEnAttente() {
+    private function getNbEnAttente(): int {
         return DB::table('demandes')->where('statut', 'Reçu')->count();
     }
 
     // 1. VUE D'ENSEMBLE (TABLEAU DE BORD PRINCIPAL)
-    public function index()
+    public function index(): View
     {
         $total_utilisateurs = DB::table('utilisateurs')->count();
         $total_demandes     = DB::table('demandes')->count();
@@ -30,7 +33,7 @@ class AdminDashboardController extends Controller
     }
 
     // 2. GESTION DES AGENTS (INSCRIPTION / LISTE)
-    public function agents()
+    public function agents(): View
     {
         $nb_en_attente = $this->getNbEnAttente();
         $utilisateurs = DB::table('utilisateurs')->orderBy('nom', 'asc')->get();
@@ -38,21 +41,21 @@ class AdminDashboardController extends Controller
     }
 
     // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
-        public function storeAgent(Request $request)
+        public function storeAgent(Request $request): RedirectResponse
     {
-        // RECTIFICATION : Aligner la règle unique sur ta colonne réelle 'login'
+        // RECTIFICATION : Aligner la règle unique sur ma colonne réelle 'login'
         $request->validate([
-            'login'    => 'required|string|max:255|unique:utilisateurs,login', // Correction de la colonne
-            'password' => 'required|string|min:4',
+            'login'    => 'required|string|max:255|unique:utilisateurs,login',
+            'password' => 'required|string|min:8',
             'prenom'   => 'required|string|max:255',
             'nom'      => 'required|string|max:255',
             'role'     => 'required|string|in:admin,mairie,relais',
         ]);
 
-        // Suite de ton code pour l'insertion de l'agent...
+        // Suite de mon code pour l'insertion de l'agent...
         DB::table('utilisateurs')->insert([
             'login'         => $request->input('login'),
-            'password_hash' => password_hash($request->input('password'), PASSWORD_BCRYPT),
+            'password_hash' => Hash::make($request->input('password')),
             'prenom'        => $request->input('prenom'),
             'nom'           => $request->input('nom'),
             'role'          => $request->input('role'),
@@ -64,8 +67,8 @@ class AdminDashboardController extends Controller
     }
 
 
-    // 4. STATISTIQUES AVANCÉES
-    public function statistiques()
+    // 4. STATISTIQUES 
+    public function statistiques(): View
     {
         $nb_en_attente = $this->getNbEnAttente();
         $naissances = DB::table('demandes')->where('type_acte', 'Naissance')->count();
@@ -75,15 +78,15 @@ class AdminDashboardController extends Controller
     }
 
     // 5. RAPPORT COMPTABLE
-    public function rapports()
+    public function rapports(): View
     {
         $nb_en_attente = $this->getNbEnAttente();
         $total_recettes = DB::table('demandes')->where('statut', 'Signé & Archivé')->count() * 1000;
         return view('admin.rapports', compact('nb_en_attente', 'total_recettes'));
     }
 
-    // 6. CONFIGURATION CORE
-    public function configuration()
+    // 6. CONFIGURATION 
+    public function configuration(): View
     {
         $nb_en_attente = $this->getNbEnAttente();
         return view('admin.configuration', compact('nb_en_attente'));
