@@ -5,15 +5,27 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminDashboardController extends Controller
 {
+    /**
+     * Météorologie des notifications pour la barre latérale.
+     * Retourne le nombre de demandes en statut "Reçu".
+     *
+     * @return int
+     */
     // Météorologie des notifications pour la barre latérale
     private function getNbEnAttente() {
         return DB::table('demandes')->where('statut', 'Reçu')->count();
     }
 
     // 1. VUE D'ENSEMBLE (TABLEAU DE BORD PRINCIPAL)
+    /**
+     * Affiche le tableau de bord principal avec des compteurs simples.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
         $total_utilisateurs = DB::table('utilisateurs')->count();
@@ -38,7 +50,16 @@ class AdminDashboardController extends Controller
     }
 
     // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
-        public function storeAgent(Request $request)
+    /**
+     * Crée un agent municipal (relais/mairie/admin).
+     *
+     * Raison : formulaire d'administration interne pour ajouter rapidement
+     * un compte opérationnel. La validation force l'unicité sur `login`.
+     *
+     * @param Request $request champs attendus: login, password, prenom, nom, role
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeAgent(Request $request)
     {
         // RECTIFICATION : Aligner la règle unique sur ta colonne réelle 'login'
         $request->validate([
@@ -52,7 +73,7 @@ class AdminDashboardController extends Controller
         // Suite de ton code pour l'insertion de l'agent...
         DB::table('utilisateurs')->insert([
             'login'         => $request->input('login'),
-            'password_hash' => password_hash($request->input('password'), PASSWORD_BCRYPT),
+            'password_hash' => Hash::make($request->input('password')),
             'prenom'        => $request->input('prenom'),
             'nom'           => $request->input('nom'),
             'role'          => $request->input('role'),
@@ -65,6 +86,12 @@ class AdminDashboardController extends Controller
 
 
     // 4. STATISTIQUES AVANCÉES
+    /**
+     * Retourne les statistiques de base pour le tableau de bord.
+     * Les valeurs sont des comptes simples basés sur la table `demandes`.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function statistiques()
     {
         $nb_en_attente = $this->getNbEnAttente();
@@ -83,6 +110,12 @@ class AdminDashboardController extends Controller
     }
 
     // 6. CONFIGURATION CORE
+    /**
+     * Page de configuration centrale (placeholder).
+     * Expose le nombre d'éléments en attente pour l'UI latérale.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function configuration()
     {
         $nb_en_attente = $this->getNbEnAttente();

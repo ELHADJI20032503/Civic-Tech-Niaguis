@@ -29,25 +29,17 @@ class LoginController extends Controller
             $user = DB::table('utilisateurs')->where('role', 'admin')->first();
         }
 
+        // Si l'utilisateur n'existe pas, on refuse la connexion.
+        // La création automatique d'un compte a été retirée pour des raisons
+        // de sécurité et doit être effectuée via l'administration.
         if (!$user) {
-            $parties = explode('@', $loginInput);
-            $prenomTmp = ucfirst($parties[0]);
-
-            DB::table('utilisateurs')->insert([
-                'login' => $loginInput,
-                'password_hash' => password_hash($passwordInput, PASSWORD_BCRYPT),
-                'prenom' => $prenomTmp,
-                'nom' => 'Niaguis',
-                'role' => 'relais',
-                'statut_compte' => 'actif',
-                'created_at' => now()
+            return back()->withInput()->withErrors([
+                'login' => 'Identifiant ou mot de passe incorrect.',
             ]);
-
-            $user = DB::table('utilisateurs')->where('login', $loginInput)->first();
-            session(['premier_allumage' => true]);
         }
 
-        $passwordValide = $user && (Hash::check($passwordInput, $user->password_hash) || $passwordInput === '1234');
+        // Vérification du mot de passe. Aucun bypass littéral n'est autorisé.
+        $passwordValide = $user && Hash::check($passwordInput, $user->password_hash);
 
         if ($passwordValide) {
             if (isset($user->statut_compte) && $user->statut_compte !== 'actif') {
