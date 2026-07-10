@@ -56,7 +56,9 @@
                         <div style="font-size: 32px; background: rgba(255,255,255,0.2); padding: 8px 14px; border-radius: 50%;">👤</div>
                         <div>
                             <span class="d-block small" style="opacity: 0.8;">Session active,</span>
-                            <h4 class="fw-bold mb-0" style="font-size: 18px;">{{ session('user_fullname', 'Aminata Sall') }}</h4>
+                            <h3 class="username" style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 2px;">
+    {{ session('user_fullname', 'Agent Terrain') }}
+</h3>
                             <span style="font-size: 12px; opacity: 0.9;">Zone : Commune de Niaguis</span>
                         </div>
                     </div>

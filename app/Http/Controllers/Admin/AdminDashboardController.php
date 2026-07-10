@@ -41,9 +41,14 @@ class AdminDashboardController extends Controller
     }
 
     // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
-        public function storeAgent(Request $request): RedirectResponse
+           // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
+        // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
+    
+
+      
+            // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
+    public function storeAgent(Request $request): \Illuminate\Http\RedirectResponse
     {
-        // RECTIFICATION : Aligner la règle unique sur ma colonne réelle 'login'
         $request->validate([
             'login'    => 'required|string|max:255|unique:utilisateurs,login',
             'password' => 'required|string|min:8',
@@ -52,19 +57,42 @@ class AdminDashboardController extends Controller
             'role'     => 'required|string|in:admin,mairie,relais',
         ]);
 
-        // Suite de mon code pour l'insertion de l'agent...
-        DB::table('utilisateurs')->insert([
-            'login'         => $request->input('login'),
-            'password_hash' => Hash::make($request->input('password')),
-            'prenom'        => $request->input('prenom'),
-            'nom'           => $request->input('nom'),
-            'role'          => $request->input('role'),
-            'statut_compte' => 'actif',
-            'created_at'    => now()
-        ]);
+        $roleOriginal = $request->input('role');
+        $roleFinal = 'Mairie'; // Valeur par défaut
+
+        if ($roleOriginal === 'relais') {
+            $roleFinal = 'Relais';
+        }
+
+        // TENTATIVE FINALE : Tester les majuscules complètes si le format classique échoue
+        try {
+            \Illuminate\Support\Facades\DB::table('utilisateurs')->insert([
+                'login'         => $request->input('login'),
+                'password_hash' => \Illuminate\Support\Facades\Hash::make($request->input('password')),
+                'prenom'        => $request->input('prenom'),
+                'nom'           => $request->input('nom'),
+                'role'          => $roleFinal, // Test de 'Mairie' ou 'Relais'
+                'statut_compte' => 'actif',
+                'created_at'    => now()
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Si la base rejette encore, on force en MAJUSCULES complètes ('MAIRIE' / 'RELAIS')
+            \Illuminate\Support\Facades\DB::table('utilisateurs')->insert([
+                'login'         => $request->input('login'),
+                'password_hash' => \Illuminate\Support\Facades\Hash::make($request->input('password')),
+                'prenom'        => $request->input('prenom'),
+                'nom'           => $request->input('nom'),
+                'role'          => strtoupper($roleOriginal), // Envoie 'MAIRIE' ou 'RELAIS'
+                'statut_compte' => 'actif',
+                'created_at'    => now()
+            ]);
+        }
 
         return redirect()->route('admin.agents')->with('success', 'L\'agent municipal a été créé avec succès.');
     }
+
+
+
 
 
     // 4. STATISTIQUES 
