@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class AdminAuthMiddleware
 {
     /**
-     * Gestion de la sécurité et du cloisonnement des routes d'administration.
+     * Gestion de la sécurité  des routes d'administration.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -30,7 +30,7 @@ class AdminAuthMiddleware
             return redirect()->route('login')->withErrors(['login' => 'Compte utilisateur introuvable.']);
         }
 
-        // 3. Validation stricte du privilège ROOT (Respect de la politique RBAC)
+        // 3. Validation stricte du privilège ROOT 
         $roleActuel = strtolower($user->role ?? '');
         if ($roleActuel !== 'admin' && $roleActuel !== 'administrator') {
             // Si l'utilisateur tente de forcer l'URL sans être admin, rejet immédiat vers son espace par défaut

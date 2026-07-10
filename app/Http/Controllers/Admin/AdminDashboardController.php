@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminDashboardController extends Controller
 {
-    // Météorologie des notifications pour la barre latérale
+    // Les notifications pour la barre latérale
     private function getNbEnAttente(): int {
         return DB::table('demandes')->where('statut', 'Reçu')->count();
     }
@@ -23,7 +23,7 @@ class AdminDashboardController extends Controller
         $total_demandes     = DB::table('demandes')->count();
         $nb_en_attente      = $this->getNbEnAttente();
         
-        // Comptage strict basé uniquement sur ta vraie colonne 'role'
+        
         $nb_relais    = DB::table('utilisateurs')->where('role', 'Relais')->count();
         $nb_officiers = DB::table('utilisateurs')->where('role', 'Mairie')->count();
 
@@ -32,7 +32,7 @@ class AdminDashboardController extends Controller
         ));
     }
 
-    // 2. GESTION DES AGENTS (INSCRIPTION / LISTE)
+    // 2. GESTION DES AGENTS 
     public function agents(): View
     {
         $nb_en_attente = $this->getNbEnAttente();
@@ -40,9 +40,8 @@ class AdminDashboardController extends Controller
         return view('admin.agents', compact('nb_en_attente', 'utilisateurs'));
     }
 
-    // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
-           // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
-        // 3. CRÉATION RAPIDE D'UN AGENT (RELAIS OU MAIRIE)
+    
+           
     
 
       
@@ -64,7 +63,7 @@ class AdminDashboardController extends Controller
             $roleFinal = 'Relais';
         }
 
-        // TENTATIVE FINALE : Tester les majuscules complètes si le format classique échoue
+        //  Tester les majuscules complètes si le format classique échoue
         try {
             \Illuminate\Support\Facades\DB::table('utilisateurs')->insert([
                 'login'         => $request->input('login'),
@@ -82,7 +81,7 @@ class AdminDashboardController extends Controller
                 'password_hash' => \Illuminate\Support\Facades\Hash::make($request->input('password')),
                 'prenom'        => $request->input('prenom'),
                 'nom'           => $request->input('nom'),
-                'role'          => strtoupper($roleOriginal), // Envoie 'MAIRIE' ou 'RELAIS'
+                'role'          => strtoupper($roleOriginal), 
                 'statut_compte' => 'actif',
                 'created_at'    => now()
             ]);

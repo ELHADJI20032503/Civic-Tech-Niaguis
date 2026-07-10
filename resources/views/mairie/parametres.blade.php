@@ -74,7 +74,7 @@
 
         <div class="mb-4">
             <h1 class="h3 fw-bold text-dark mb-1">Configuration Générale de la Mairie</h1>
-            <p class="text-muted small mb-0">Ajustez les règles métiers, les alertes citoyens et les tarifs d'état civil de la commune.</p>
+            <p class="text-muted small mb-0"> On Ajuste les règles métiers, les alertes citoyens et les tarifs d'état civil de la commune.</p>
         </div>
 
         <!-- FORMULAIRE TECHNIQUE  -->

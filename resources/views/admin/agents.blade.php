@@ -67,7 +67,7 @@
                     <span style="font-size: 10.5px; color: #64748b;">Administrateur Système</span>
                 </div>
             </div>
-            <!-- INTEGRATION UNIVERSELLE DU BOUTON DE DÉCONNEXION -->
+            <!-- INTEGRATION  DU BOUTON DE DÉCONNEXION -->
             <a href="{{ route('logout') }}" class="btn-logout">❌ Déconnexion</a>
         </div>
     </div>
@@ -94,7 +94,7 @@
         <div class="admin-card">
             <h5 class="fw-bold h6 mb-3 text-dark">Enregistrer un nouvel Agent de Mairie ou Relais</h5>
             
-            <!-- CORRECTIF ABSOLU : Redirection chirurgicale vers l'action de création de l'Admin -->
+            <!--  Redirection  vers l'action de création de l'Admin -->
             <form action="{{ route('admin.agents.store') }}" method="POST" style="max-width: 500px;">
                 @csrf
                 <div class="mb-3">

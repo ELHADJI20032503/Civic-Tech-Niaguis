@@ -20,10 +20,10 @@ class LoginController extends Controller
         $loginInput = $credentials['login'];
         $passwordInput = $credentials['password'];
 
-        // Recherche stricte de l'utilisateur
+        // Recherche  de l'utilisateur
         $user = DB::table('utilisateurs')->where('login', $loginInput)->first();
 
-        // Alias rapide pour l'admin
+        // Alias  pour l'admin
         if (!$user && in_array(strtolower($loginInput), ['admin', 'admin@niaguis.gouv'], true)) {
             $user = DB::table('utilisateurs')->where('role', 'admin')->first();
         }
@@ -32,7 +32,7 @@ class LoginController extends Controller
             return back()->withInput()->withErrors(['login' => 'Identifiant ou mot de passe incorrect.']);
         }
 
-        // Vérification du mot de passe (Hybride Haché / Brut)
+        // Vérification du mot de passe 
         $passwordValide = false;
         if (str_starts_with($user->password_hash, '$2y$') || str_starts_with($user->password_hash, '$2a$')) {
             try { $passwordValide = Hash::check($passwordInput, $user->password_hash); } catch (\Exception $e) { $passwordValide = false; }

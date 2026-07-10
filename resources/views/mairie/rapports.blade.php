@@ -55,7 +55,7 @@
         <div class="data-card">
             <h1 class="h3 fw-bold text-dark mb-3">Rapports municipaux</h1>
             <p class="text-muted mb-4">Cette page contient les rapports de performance de la mairie.</p>
-            <p>Contenu de rapport temporaire. Ajoutez ici les tableaux, graphiques ou filtres de reporting souhaités.</p>
+            <p>Contenu de rapport temporaire. On Ajoute ici les tableaux, graphiques ou filtres de reporting souhaités.</p>
         </div>
     </div>
 </body>

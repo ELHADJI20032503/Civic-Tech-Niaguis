@@ -9,7 +9,7 @@ use App\Http\Controllers\Mairie\MairieDashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 
 // ==========================================
-// 1. AUTHENTIFICATION & SÉLECTION DE PROFIL 
+// 1. AUTHENTIFICATION & SÉLECTION DU PROFIL 
 // ==========================================
 Route::get('/', function () { return view('auth.login'); })->name('login');
 Route::get('/login', function () { return redirect('/'); });
@@ -19,7 +19,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 
-// LA ROUTE CRUCIALE DE SÉLECTION DE PROFIL
+// LA ROUTE CRUCIALE DE LA SÉLECTION DE PROFIL
 Route::get('/selection-profil', function () { return view('auth.profil'); })->name('profil.view');
 Route::post('/selection-profil-action', [ProfileController::class, 'select'])->name('profil.select');
 

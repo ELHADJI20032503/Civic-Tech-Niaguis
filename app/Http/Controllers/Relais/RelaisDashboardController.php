@@ -9,12 +9,9 @@ use Illuminate\Support\Facades\Log;
 
 class RelaisDashboardController extends Controller
 {
-    // 1. AFFICHAGE DU TABLEAU DE BORD (HISTORIQUE DES SAISIES)
+    
         // 1. AFFICHAGE DU TABLEAU DE BORD (HISTORIQUE DES SAISIES)
-        // 1. AFFICHAGE DU TABLEAU DE BORD (HISTORIQUE DES SAISIES)
-        // 1. AFFICHAGE DU TABLEAU DE BORD (HISTORIQUE DES SAISIES)
-        // 1. AFFICHAGE DU TABLEAU DE BORD (HISTORIQUE DES SAISIES)
-        // 1. AFFICHAGE DU TABLEAU DE BORD (HISTORIQUE DES SAISIES AVEC JOINTURE CITOYENS)
+        
     public function index()
     {
         $idRelaisSession = session('user_id') ?? session('auth_user_id') ?? 1;
@@ -36,7 +33,7 @@ class RelaisDashboardController extends Controller
         // 3. Calcul des actes en cours (Statut 'Prêt')
         $nb_en_cours = DB::table('demandes')->where('statut', 'Prêt')->count();
 
-        // Assigner l'historique joint à la variable attendue par ton tableau HTML
+        // Assigner l'historique joint à la variable attendue 
         $dernieres_demandes = $historique;
 
         // Envoi complet de toutes les clés d'affichage requises pour bétonner la sécurité
