@@ -22,11 +22,24 @@
         <span class="tag-commune">CIVIC-TECH NIAGUIS</span>
         <h2 class="h4 fw-bold mb-1 text-dark">Authentification</h2>
         <p class="text-muted small mb-4">Connectez-vous à votre espace de travail</p>
-        <form action="{{ route('login.post') }}" method="POST" class="text-start">
+
+        <!-- Affichage dynamique des erreurs d'authentification ou de compte suspendu -->
+        @if ($errors->any())
+            <div class="alert alert-danger text-start p-2 mb-3 small" style="border-radius: 8px;">
+                <ul class="mb-0 list-unstyled">
+                    @foreach ($errors->all() as $error)
+                        <li>⚠️ {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- CORRECTIF DE SÉCURITÉ : Forcer l'URL physique absolue pour écraser le bug de cache 404 -->
+        <form action="/login-action" method="POST" class="text-start">
             @csrf
             <div class="mb-3">
                 <label class="form-label">Identifiant / Login</label>
-                <input type="text" class="form-control" name="login" placeholder="nom.prenom@niaguis.gouv" required autofocus>
+                <input type="text" class="form-control" name="login" value="{{ old('login') }}" placeholder="nom.prenom@niaguis.gouv" required autofocus>
             </div>
             <div class="mb-3">
                 <label class="form-label">Mot de passe</label>
@@ -37,4 +50,3 @@
     </div>
 </body>
 </html>
- 

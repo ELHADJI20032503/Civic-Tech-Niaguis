@@ -10,9 +10,14 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    ->withMiddleware(function (Middleware $middleware) {
+        // EXEMPTION DE SECOURS POUR LE RELAIS (Éradique définitivement l'erreur 419)
+        $middleware->validateCsrfTokens(except: [
+            'relais/nouvelle-demande-naissance',
+            'relais/nouvelle-demande-mariage',
+            'relais/nouvelle-demande-deces',
+        ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

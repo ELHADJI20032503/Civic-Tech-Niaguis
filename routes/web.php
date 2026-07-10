@@ -7,60 +7,61 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Relais\RelaisDashboardController;
 use App\Http\Controllers\Mairie\MairieDashboardController;
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Middleware\AdminAuthMiddleware;
+
 // ==========================================
 // 1. AUTHENTIFICATION & SÉLECTION DE PROFIL 
 // ==========================================
-Route::match(['get', 'post'], '/', function () { return view('auth.login'); })->name('login');
+Route::get('/', function () { return view('auth.login'); })->name('login');
 Route::get('/login', function () { return redirect('/'); });
+
 Route::post('/login-action', [LoginController::class, 'login'])->name('login.post');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+
+// LA ROUTE CRUCIALE DE SÉLECTION DE PROFIL
 Route::get('/selection-profil', function () { return view('auth.profil'); })->name('profil.view');
 Route::post('/selection-profil-action', [ProfileController::class, 'select'])->name('profil.select');
 
 // ==========================================
-// 2. ESPACE RELAIS TERRAIN (SAISIE MULTI-ACTES)
+// 2. ESPACE VALIDATION MAIRIE 
 // ==========================================
-Route::get('/relais/dashboard', [RelaisDashboardController::class, 'index'])->name('relais.dashboard');
-Route::get('/relais/choisir-acte', [RelaisDashboardController::class, 'choix_acte'])->name('relais.choix_acte');
-Route::get('/relais/nouvelle-demande-naissance', [RelaisDashboardController::class, 'create'])->name('relais.create');
-Route::post('/relais/nouvelle-demande-naissance', [RelaisDashboardController::class, 'store'])->name('relais.store');
-Route::get('/relais/nouvelle-demande-mariage', [RelaisDashboardController::class, 'create_mariage'])->name('relais.create_mariage');
-Route::post('/relais/nouvelle-demande-mariage', [RelaisDashboardController::class, 'store_mariage'])->name('relais.store_mariage');
-Route::get('/relais/nouvelle-demande-deces', [RelaisDashboardController::class, 'create_deces'])->name('relais.create_deces');
-Route::post('/relais/nouvelle-demande-deces', [RelaisDashboardController::class, 'store_deces'])->name('relais.store_deces');
-
-// ==========================================
-// 3. ESPACE VALIDATION MAIRIE 
-// ==========================================
-// Les 4 pages principales connectées à mon contrôleur
-Route::get('/mairie/tableau-de-bord', [MairieDashboardController::class, 'tableauDeBord'])->name('mairie.tableau_de_bord');
-Route::get('/mairie/dashboard', [MairieDashboardController::class, 'index'])->name('mairie.dashboard');
-Route::get('/mairie/citoyens', [MairieDashboardController::class, 'citoyens'])->name('mairie.citoyens');
-Route::get('/mairie/statistiques', [MairieDashboardController::class, 'statistiques'])->name('mairie.statistiques');
-Route::get('/mairie/documents-officiels', [MairieDashboardController::class, 'documents'])->name('mairie.documents');
-
-
-Route::get('/mairie/rapports', [MairieDashboardController::class, 'tableauDeBord'])->name('mairie.rapports');
-
-
-Route::get('/mairie/parametres', function () {
-    $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
-    return view('mairie.parametres', compact('nb_en_attente')); // me Renvoie spécifiquement sur ma page de configuration
-})->name('mairie.parametres');
-
-// Traitement POST pour l'instruction et la caisse
-Route::post('/mairie/traiter/{id}', [MairieDashboardController::class, 'validerDossier'])->name('mairie.traiter');
+Route::group(['prefix' => 'mairie'], function () {
+    Route::get('/tableau-de-bord', [MairieDashboardController::class, 'tableauDeBord'])->name('mairie.tableau_de_bord');
+    Route::get('/dashboard', [MairieDashboardController::class, 'index'])->name('mairie.dashboard');
+    Route::get('/citoyens', [MairieDashboardController::class, 'citoyens'])->name('mairie.citoyens');
+    Route::get('/statistiques', [MairieDashboardController::class, 'statistiques'])->name('mairie.statistiques');
+    Route::get('/documents-officiels', [MairieDashboardController::class, 'documents'])->name('mairie.documents');
+    Route::get('/rapports', [MairieDashboardController::class, 'tableauDeBord'])->name('mairie.rapports');
+    Route::get('/parametres', function () {
+        $nb_en_attente = DB::table('demandes')->where('statut', 'Reçu')->count();
+        return view('mairie.parametres', compact('nb_en_attente'));
+    })->name('mairie.parametres');
+    Route::post('/traiter/{id}', [MairieDashboardController::class, 'validerDossier'])->name('mairie.traiter');
+});
 
 // ==========================================
+// 3. ESPACE SUPER-ADMINISTRATEUR
 // ==========================================
-// 4. PORTAIL ET REQUÊTES SUPER-ADMINISTRATEUR 
-
-
-Route::middleware([AdminAuthMiddleware::class])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/gestion-agents', [AdminDashboardController::class, 'agents'])->name('admin.agents');
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/gestion-agents', [AdminDashboardController::class, 'agents'])->name('admin.agents');
     Route::post('/admin/gestion-agents/creer', [AdminDashboardController::class, 'storeAgent'])->name('admin.agents.store');
-    Route::get('/admin/statistiques', [AdminDashboardController::class, 'statistiques'])->name('admin.statistiques');
-    Route::get('/admin/rapports-systeme', [AdminDashboardController::class, 'rapports'])->name('admin.rapports');
-    Route::get('/admin/configuration', [AdminDashboardController::class, 'configuration'])->name('admin.configuration');
+    Route::get('/statistiques', [AdminDashboardController::class, 'statistiques'])->name('admin.statistiques');
+    Route::get('/rapports-systeme', [AdminDashboardController::class, 'rapports'])->name('admin.rapports');
+    Route::get('/configuration', [AdminDashboardController::class, 'configuration'])->name('admin.configuration');
+});
+
+// ==========================================
+// 4. ESPACE RELAIS TERRAIN
+// ==========================================
+Route::group(['prefix' => 'relais'], function () {
+    Route::get('/dashboard', [RelaisDashboardController::class, 'index'])->name('relais.dashboard');
+    Route::get('/choisir-acte', [RelaisDashboardController::class, 'choix_acte'])->name('relais.choix_acte');
+    Route::get('/nouvelle-demande-naissance', [RelaisDashboardController::class, 'create'])->name('relais.create');
+    Route::post('/nouvelle-demande-naissance', [RelaisDashboardController::class, 'store'])->name('relais.store');
+    Route::get('/nouvelle-demande-mariage', [RelaisDashboardController::class, 'create_mariage'])->name('relais.create_mariage');
+    Route::post('/nouvelle-demande-mariage', [RelaisDashboardController::class, 'store_mariage'])->name('relais.store_mariage');
+    Route::get('/nouvelle-demande-deces', [RelaisDashboardController::class, 'create_deces'])->name('relais.create_deces');
+    Route::post('/nouvelle-demande-deces', [RelaisDashboardController::class, 'store_deces'])->name('relais.store_deces');
 });
