@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        <!-- CORRECTIF DE SÉCURITÉ : Forcer l'URL physique absolue pour écraser le bug de cache 404 -->
+        <!-- Forcer l'URL physique absolue pour écraser le bug de cache 404 -->
         <form action="/login-action" method="POST" class="text-start">
             @csrf
             <div class="mb-3">

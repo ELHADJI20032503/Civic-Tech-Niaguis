@@ -25,7 +25,7 @@ class Utilisateur extends Authenticatable
         'statut_compte',
     ];
 
-    // Indique à Laravel que le mot de passe est stocké dans 'password_hash'
+    // J'Indique à Laravel que le mot de passe est stocké dans 'password_hash'
     public function getAuthPassword()
     {
         return $this->password_hash;

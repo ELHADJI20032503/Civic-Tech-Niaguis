@@ -11,7 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // EXEMPTION DE SECOURS POUR LE RELAIS (Éradique définitivement l'erreur 419)
+        // Afin d'eviter l'erreur 419
         $middleware->validateCsrfTokens(except: [
             'relais/nouvelle-demande-naissance',
             'relais/nouvelle-demande-mariage',

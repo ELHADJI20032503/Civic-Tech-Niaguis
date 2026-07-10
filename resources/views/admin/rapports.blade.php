@@ -41,7 +41,7 @@
                 {{ strtoupper(substr(session('user_fullname', 'AD'), 0, 2)) }}
             </div>
                         <div>
-                <!-- Nettoyage de la valeur de secours  -->
+                
                 <strong class="d-block text-white" style="font-size: 12.5px;">
                     {{ session('user_fullname', 'Admin Local') }}
                 </strong>

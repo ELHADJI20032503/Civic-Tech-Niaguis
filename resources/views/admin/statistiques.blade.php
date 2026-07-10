@@ -17,7 +17,7 @@
 <body>
     <div class="sidebar">
         <div class="sidebar-brand"><span>🛡️</span><div><span class="fw-bold">Civic-Tech</span><br><span style="font-size:10px;">ADMIN</span></div></div>
-                <!-- BARRE LATÉRALE SUPER-ADMINISTRATEUR ALIGNÉE SUR LES ROUTES RÉELLES -->
+                <!-- BARRE LATÉRALE ADMINISTRATEUR  -->
         <span class="nav-section-title">Panneau Administrateur</span>
         <ul class="sidebar-nav">
             <!-- 1. TABLEAU DE BORD  -->
